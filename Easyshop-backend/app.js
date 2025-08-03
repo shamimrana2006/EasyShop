@@ -1,5 +1,5 @@
 const express = require("express");
-require("dotenv").config()
+require("dotenv").config();
 const passport = require("passport");
 const cors = require("cors");
 var cookieParser = require("cookie-parser");
@@ -13,8 +13,8 @@ const { modngoDBconnection } = require("./controller/mongodDBConnection");
 const { corseSEtup } = require("./controller/Cors");
 const app = express();
 
-
 //-------------------------------------------------------initial setup-------------------------------
+app.enable("trust proxy");
 modngoDBconnection();
 app.use(cors(corseSEtup));
 app.use(cookieParser());
