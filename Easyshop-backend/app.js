@@ -14,7 +14,7 @@ const { corseSEtup } = require("./controller/Cors");
 const app = express();
 
 //-------------------------------------------------------initial setup-------------------------------
-// app.enable("trust proxy");
+app.enable("trust proxy");
 modngoDBconnection();
 app.use(cors(corseSEtup));
 app.use(cookieParser());
