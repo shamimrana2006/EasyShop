@@ -1,5 +1,5 @@
 const corseSEtup = {
-  origin: "http://localhost:5173",
+  origin: "https://easy-shop-puce.vercel.app",
   credentials: true,
 };
 
