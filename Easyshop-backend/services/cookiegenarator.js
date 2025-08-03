@@ -1,7 +1,7 @@
 const cookieGenerate = (
   res,
   {
-    isSecure = false,
+    isSecure = true,
     cookieName = "token",
     cookieValue = "",
     maxAge = 60 * 60 * 1000,
@@ -9,7 +9,8 @@ const cookieGenerate = (
 ) => {
   res.cookie(cookieName, cookieValue, {
     httpOnly: isSecure, // Not accessible via JS
-    sameSite: isSecure ? "none" : "lax",
+    secure:isSecure,
+    sameSite: isSecure ? "None" : "lax",
     maxAge, // 1 m in milliseconds
   });
 };
