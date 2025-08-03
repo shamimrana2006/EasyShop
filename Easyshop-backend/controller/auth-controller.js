@@ -97,7 +97,7 @@ const login_controller = async (req, res) => {
           process.env.SECRETE_JWT_KEY,
           "20m"
         );
-        const isSecure = req.protocol;
+        const isSecure = req.secure;
         cookieGenerate(res, {
           cookieName: "token",
           cookieValue: token,
