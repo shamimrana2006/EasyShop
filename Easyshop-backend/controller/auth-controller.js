@@ -97,7 +97,7 @@ const login_controller = async (req, res) => {
           process.env.SECRETE_JWT_KEY,
           "20m"
         );
-        const isSecure = req.secure;
+        const isSecure = true;
         cookieGenerate(res, {
           cookieName: "token",
           cookieValue: token,
@@ -148,7 +148,7 @@ const otp_sender_verify = async (req, res) => {
         status_code: 401,
         message: {
           message: "already verified account",
-          check:  UserDAta?.isVerified?.value,
+          check: UserDAta?.isVerified?.value,
         },
       });
     }
