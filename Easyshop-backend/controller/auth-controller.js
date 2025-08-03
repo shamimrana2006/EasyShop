@@ -97,17 +97,18 @@ const login_controller = async (req, res) => {
           process.env.SECRETE_JWT_KEY,
           "20m"
         );
-        const isSecure = true;
+        const isSecure = req.secure;
         cookieGenerate(res, {
           cookieName: "token",
           cookieValue: token,
           isSecure,
           maxAge: 20 * 60 * 1000,
         });
+        const { password, ...userData } = findingUser;
         success_res(res, {
           message: "valid user check success",
           status_code: 200,
-          payLoad: "Bearer " + token,
+          payLoad: { userData, isSecure },
         });
       }
     }

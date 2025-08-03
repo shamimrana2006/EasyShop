@@ -9,7 +9,7 @@ const cookieGenerate = (
 ) => {
   res.cookie(cookieName, cookieValue, {
     httpOnly: isSecure, // Not accessible via JS
-    secure:isSecure,
+    secure: isSecure,
     sameSite: isSecure ? "None" : "lax",
     maxAge, // 1 m in milliseconds
   });
