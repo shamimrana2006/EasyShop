@@ -29,9 +29,6 @@ const NavBar = () => {
   };
 
   window.addEventListener("resize", () => {
-    // if (window.innerWidth > 768) {
-    //   hiddenSearchBTN();
-    // }
     if (window.innerWidth > 640) {
       document.querySelector(".MenuVisible").classList.add("hidden");
     }

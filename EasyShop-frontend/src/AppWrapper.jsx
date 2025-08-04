@@ -6,6 +6,7 @@ export default function AppWrapper({ children }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userStore);
   useEffect(() => {
+    console.count("appwrapper")
     dispatch(userFetch({ url: "/join/profile" }));
   }, []);
 

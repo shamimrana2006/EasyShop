@@ -8,9 +8,9 @@ import { userFetch } from "../features/UserSlice";
 
 const Layout = () => {
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(userFetch({ url: "/join/profile" }));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(userFetch({ url: "/join/profile" }));
+  // }, []);
   return (
     <div>
       {/* <div className="pt-2 flex justify-center gap-2 ">
