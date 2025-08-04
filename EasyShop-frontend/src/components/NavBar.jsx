@@ -1,16 +1,15 @@
 import React, { useEffect } from "react";
-import { IoBagHandleOutline, IoPauseCircle } from "react-icons/io5";
+import { IoBagHandleOutline } from "react-icons/io5";
 import { CiHeart, CiMenuKebab, CiSun, CiUser } from "react-icons/ci";
 import { FaBackward, FaFacebook, FaInstagram, FaLinkedin, FaSearch, FaTwitter } from "react-icons/fa";
 import { NavLink, useLocation } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { userFetch } from "../Redux/Slice/UserSlice";
-import { ClipLoader } from "react-spinners";
-import Loading from "./Loading";
+
+import Loading from "../Layout/Loading";
 const NavBar = () => {
   const userState = useSelector((state) => state.userStore);
   const path = useLocation();
-  const dispatch = useDispatch();
+
   useEffect(() => {
     document.querySelector(".MenuVisible").classList.add("hidden");
   }, [path]);

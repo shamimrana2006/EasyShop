@@ -1,13 +1,12 @@
 import "./login.css";
 import Lottie from "lottie-react";
 import loginLottie from "./Lottie/Login.json";
-import { FaEye, FaLock, FaUnlock, FaUser, FaUserAlt } from "react-icons/fa";
+import { FaEye, FaLock, FaUser } from "react-icons/fa";
 import { Link, NavLink, useNavigate } from "react-router";
-import { CiAlarmOn, CiCalculator1 } from "react-icons/ci";
-import PageTransition from "../../service/PageTnsition";
-import { useEffect, useState } from "react";
+import { CiCalculator1 } from "react-icons/ci";
+
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { userFetch } from "../../Redux/Slice/UserSlice";
 
 const Register = () => {
   const user = useSelector((state) => state.userStore);
@@ -20,9 +19,6 @@ const Register = () => {
     const formDAta = new FormData(e.target);
     const data = Object.fromEntries(formDAta.entries());
     console.log(data);
-
-    
-
   };
 
   const [showPassword, setShowPassword] = useState(false);

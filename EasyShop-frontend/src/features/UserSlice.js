@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { axiosUserInstance } from "../../Axios/UserAPIcall";
+import { axiosUserInstance } from "../services/UserAPIcall";
 
 export const userFetch = createAsyncThunk("user/fetchData", async ({ payload = {}, url = "" }) => {
   try {

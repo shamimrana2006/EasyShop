@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { userFetch } from "../Redux/Slice/UserSlice";
+import { userFetch } from "./features/UserSlice";
 
 export default function AppWrapper({ children }) {
   const dispatch = useDispatch();

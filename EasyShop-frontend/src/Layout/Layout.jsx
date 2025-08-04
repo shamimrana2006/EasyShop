@@ -2,9 +2,9 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { FaBeer } from "react-icons/fa";
 import { NavLink, Outlet } from "react-router";
-import NavBar from "./NavBar";
+import NavBar from "../components/NavBar";
 import { useDispatch } from "react-redux";
-import { userFetch } from "../Redux/Slice/UserSlice";
+import { userFetch } from "../features/UserSlice";
 
 const Layout = () => {
   const dispatch = useDispatch();

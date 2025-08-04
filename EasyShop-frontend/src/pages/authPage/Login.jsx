@@ -6,8 +6,9 @@ import { FaEye, FaLock, FaUser } from "react-icons/fa";
 import { Link, NavLink, useLocation, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { userFetch } from "../../Redux/Slice/UserSlice";
+
 import Loading from "../../Layout/Loading";
+import { userFetch } from "../../features/UserSlice";
 
 const Login = () => {
   const navigate = useNavigate();

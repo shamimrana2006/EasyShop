@@ -1,16 +1,17 @@
 import { Route, Routes, useLocation } from "react-router";
-import Auth from "./components/Layout/AuthLayout";
-import Login from "./components/pages/authPage/Login";
-import Profile from "./components/pages/IsLogin/User/Profile";
-import User from "./components/pages/IsLogin/User/UserLayout";
-import Layout from "./components/Layout/Layout";
-import Register from "./components/pages/authPage/Register";
-import NotFound from "./components/pages/NotFound";
+import Auth from "../Layout/AuthLayout";
+import Login from "../pages/authPage/Login";
+import Profile from "../pages/IsLoginPages/User/Profile";
+import User from "../Layout/UserLayout";
+import Layout from "../Layout/Layout";
+import Register from "../pages/authPage/Register";
+import NotFound from "../pages/NotFound";
 import { AnimatePresence } from "framer-motion";
-import { PageTransitionFade } from "./components/service/PageTnsition";
-import PrivetRout from "./components/privet/Private";
+import { PageTransitionFade } from "../components/PageTnsition";
+import PrivetRout from "../pages/privetPage/Private";
 
-const Router = () => {
+
+const Router_Custom = () => {
   const location = useLocation();
   return (
     <AnimatePresence mode="wait">
@@ -19,7 +20,7 @@ const Router = () => {
           <Route path="/" element={<Layout />}>
             <Route path="user" element={<User />}>
               <Route
-                path="Profile"
+                path="profile"
                 element={
                   <PrivetRout>
                     <Profile />
@@ -46,4 +47,4 @@ const Router = () => {
   );
 };
 
-export default Router;
+export default Router_Custom;
