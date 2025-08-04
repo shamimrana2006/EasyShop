@@ -5,5 +5,3 @@ A full-stack e-commerce web application with separate **Backend** and **Frontend
 [Live Demo](https://easy-shop-puce.vercel.app)
 
 ---
-
-## 📁 Folder Structure
