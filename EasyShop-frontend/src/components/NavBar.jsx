@@ -10,9 +10,9 @@ const NavBar = () => {
   const userState = useSelector((state) => state.userStore);
   const path = useLocation();
 
-  useEffect(() => {
-    document.querySelector(".MenuVisible").classList.add("hidden");
-  }, [path]);
+  // useEffect(() => {
+  //   document.querySelector(".MenuVisible").classList.add("hidden");
+  // }, [path]);
 
   const themeToggle = () => {
     document.documentElement.classList.toggle("dark");

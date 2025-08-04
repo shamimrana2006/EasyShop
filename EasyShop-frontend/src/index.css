@@ -13,12 +13,6 @@
   font-family: "Outfit", sans-serif;
 }
 
-/* ::view-transition-old(root),
-::view-transition-old(div),
-::view-transition-new(root) {
-
-  navigation: auto;
-} */
 
 @layer components {
   .transition-smooth {

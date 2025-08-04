@@ -76,7 +76,11 @@ const login_controller = async (req, res) => {
     if (!UserName) {
       return error_res(res, { status_code: 401, message: "UserName required" });
     }
+    console.time("mongo")
     const findingUser = await Users_collection.findOne({ UserName });
+    console.timeEnd("mongo")
+    console.log(findingUser);
+    
 
     if (!findingUser) {
       return error_res(res, { status_code: 400, message: "user not found" });
@@ -104,12 +108,12 @@ const login_controller = async (req, res) => {
           isSecure,
           maxAge: 20 * 60 * 1000,
         });
-        const { password, ...userData } = findingUser.toObject();//mongodb response
-      
+        const { password, ...userData } = findingUser.toObject(); //mongodb response
+
         success_res(res, {
           message: "valid user check success",
           status_code: 200,
-          payLoad: { userData, isSecure },
+          payLoad: userData,
         });
       }
     }

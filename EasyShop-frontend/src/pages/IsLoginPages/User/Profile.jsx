@@ -14,7 +14,7 @@ const Profile = () => {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-red-500 text-center">{userState.user.payLoad.name}</h1>
+      <h1 className="text-3xl font-bold text-red-500 text-center">{userState.user?.payLoad?.name}</h1>
     </div>
   );
 };
