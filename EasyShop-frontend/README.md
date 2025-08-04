@@ -1,4 +1,5 @@
 # **EasyShop** _FrontEnd_
+[Live Demo]("https://easy-shop-puce.vercel.app")
 ### Deploy in vercel 
 - **deploy issue** // use vercel.json for 404,500 and nested routing or other issue 
 - **package.json** // and engine node 22.x(2025August), add main (must be index.js)
