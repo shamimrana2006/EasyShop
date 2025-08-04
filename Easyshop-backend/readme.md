@@ -1,26 +1,49 @@
-# **EasyShop** _FrontEnd_
-### Deploy in vercel 
-- **deploy issue** // use vercel.json for 404,500 and nested routing or other issue 
-- **package.json** // and engine node 22.x(2025August), add main (must be index.js)
-- **.env handle** // like use some variable value (URL) different both site localhost and vercel 
-- **cookie not set problem** // with credential every cookie use get or post 
+# **EasyShop** _Backend_
+### Endpoint 
+_http://localhost:2006_
+########
+_https://easy-shop-backend-mocha.vercel.app_
+- /join
+    - /registration
+    - /login
+    - /resetDB
+    - /profile
+    - /get-otp-verify
+    - /check-otp-verify
+    - /reset_password_opt
+    - /reset_password
+- /user
+- /admin
+- /product
+- /seller 
 
-### problems && setup guided front-end
-#### redirect problem solved:
-- **AppWrapper** // must be use because authenticated user storing in state(for all page access) like redux dispatch call 
-- **private rout** // must be at lest one time dispatch user from private rout because when navigate suddenly you lost token 
-#### other issue :
-- **Reload problem in private rout** //state loading correction
-- **redirect and back problem** // when navigate then use replace 
-- **folder structure issue** // maintain clean structure like pages,component,layout,rout,server,app,feature etc use 
-- **animation use** //key=location.pathname, and location=location use in <Routes key location>
-- **dark mode** // handling with tailwind and  use only index.css and index.html use "dark" class
-- **theme** // use other class in html file for use other theme like blue , red, yellow, green etc
+### Deploy in vercel
+- **deploy issue** // use vercel.json for nested routing
+- **.env handle**
+  - mongoDB url (atlas and local) for offline codding
+  - originLocal, deployedOrigin
+- **cors**
+  - (localhost Origin and deployed origin)
+  - cors for postman req.secure = undefined
+  - must use credential for cookie
+- **cookie not set problem**
+  - http, secure , samesite, maxAge handle with isSecure for both environment (vercel and local)
+  - use must be app.enable("proxy trust") for (https) vercel
 
-## vercel deploying :
-- must be main file name is **index.js**
-- vercel.json file
-- package.json configure //must use node version like 20.x in 2025 august
-- cors setup
-- cookie setup
-- routing issue // 404,500
+### problems && setup guided backend
+
+- initial setup
+  - app.enable("trust proxy"); // for vercel https enable
+  - modngoDBconnection(); // not middleware only function call
+  - app.use(cors(corseSEtup)); // cors setup
+  - app.use(cookieParser()); // get cookie
+  - app.use(express.json()); // receive
+  - app.use(express.urlencoded({ extended: true })); // for from data collection
+  - app.use(passport.initialize());
+    -passport initialize not passport-jwt its only passport when you use any package from passport.js then use it must like passport-jwt, passport-google, passport-github
+
+- other issue :
+
+    - **import / ES6** // when you use import then use export only but when you use require then use must be module.export 
+    - **schema email candidate key** // must be use sparse: true because it ignore duplicate error for several time save empty email
+    - **use validator middleware** // because ifelse create huge ugly code
