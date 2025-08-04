@@ -24,7 +24,7 @@ app.use(passport.initialize());
 //-------------------------------------------------------routing-------------------------------
 
 app.get("/", (req, res) => {
-  res.send("our server its work");
+  res.send("our server its working now ....");
 });
 
 app.use("/join", userManagement_router);
