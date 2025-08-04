@@ -104,7 +104,8 @@ const login_controller = async (req, res) => {
           isSecure,
           maxAge: 20 * 60 * 1000,
         });
-        const { password, ...userData } = findingUser;
+        const { password, ...userData } = findingUser.toObject();//mongodb response
+      
         success_res(res, {
           message: "valid user check success",
           status_code: 200,

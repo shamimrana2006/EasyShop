@@ -9,7 +9,7 @@ const success_res = (
   });
 };
 
-const error_res = (res, { status_code = 500, message = "success" }) => {
+const error_res = (res, { status_code = 500, message = "something went wrong" }) => {
   res.status(status_code).json({
     status: status_code,
     message,
