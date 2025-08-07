@@ -12,6 +12,7 @@ const cookieGenerate = (
     secure: isSecure,
     sameSite: isSecure ? "None" : "lax",
     maxAge, // 1 m in milliseconds
+    path: "/",
   });
 };
 
