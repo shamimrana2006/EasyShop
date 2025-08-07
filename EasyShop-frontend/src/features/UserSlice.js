@@ -3,13 +3,23 @@ import { axiosUserInstance } from "../services/UserAPIcall";
 
 export const userFetch = createAsyncThunk("user/fetchData", async ({ method = "get", payload = {}, url = "" }) => {
   try {
-    return await axiosUserInstance[method](url, payload)
-      .then((res) => {
-        // console.log(res.data);
+    if (method == "get") {
+      return await axiosUserInstance[method](url)
+        .then((res) => {
+          // console.log(res.data);
 
-        return res.data;
-      })
-      .catch((err) => console.log(err));
+          return res.data;
+        })
+        .catch((err) => console.log(err));
+    } else {
+      return await axiosUserInstance[method](url, payload)
+        .then((res) => {
+          // console.log(res.data);
+
+          return res.data;
+        })
+        .catch((err) => console.log(err));
+    }
   } catch (error) {
     console.log(error);
   }

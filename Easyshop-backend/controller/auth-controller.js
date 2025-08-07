@@ -164,10 +164,11 @@ const LogoutAT = async (req, res) => {
       error_res(res);
     }
     const isSecure = req.secure;
-    res.clearCookie("token", { 
+    res.clearCookie("token", {
       httpOnly: isSecure,
       secure: isSecure,
-      sameSite: isSecure ? "None" : "lax", 
+      sameSite: isSecure ? "None" : "lax",
+      path: "/",
     });
 
     success_res(res, { message: "logout successfully", status_code: 200 });
