@@ -1,10 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { axiosUserInstance } from "../services/UserAPIcall";
 
-export const userFetch = createAsyncThunk("user/fetchData", async ({ payload = {}, url = "" }) => {
+export const userFetch = createAsyncThunk("user/fetchData", async ({ method = "get", payload = {}, url = "" }) => {
   try {
-    return await axiosUserInstance
-      .post(url, payload)
+    return await axiosUserInstance[method](url, payload)
       .then((res) => {
         // console.log(res.data);
 

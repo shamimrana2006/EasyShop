@@ -11,7 +11,8 @@
 - **AppWrapper** // must be use because authenticated user storing in state(for all page access) like redux dispatch call 
 - **private rout** // must be at lest one time dispatch user from private rout because when navigate suddenly you lost token 
 #### other issue :
-- **Reload problem in private rout** //state loading correction
+- **Reload problem in private rout** //state loading correction initially true loading
+    - use <Navigate to> normally but when use useEffect then use navigate()
 - **redirect and back problem** // when navigate then use replace 
 - **folder structure issue** // maintain clean structure like pages,component,layout,rout,server,app,feature etc use 
 - **animation use** //key=location.pathname, and location=location use in <Routes key location>

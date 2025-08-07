@@ -7,7 +7,6 @@ import { userFetch } from "../../features/UserSlice";
 const PrivetRout = ({ children }) => {
   const user = useSelector((state) => state.userStore);
   const navigate = useNavigate();
-  const location = useLocation();
   const dispatch = useDispatch();
 
   useEffect(() => {

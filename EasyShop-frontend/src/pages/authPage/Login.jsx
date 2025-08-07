@@ -36,6 +36,7 @@ const Login = () => {
     if (!userName && !Password) return;
     dispath(
       userFetch({
+        method: "post",
         url: "/join/login",
         payload: { UserName: userName, password: Password },
       }),
@@ -56,7 +57,7 @@ const Login = () => {
             <form onSubmit={HandleLogin}>
               <div className="flex flex-col gap-2 mt-2">
                 <div className="flex justify-between items-center gap-2 border-b pl-3 p-2 rounded-[15px] border-gray-300">
-                  <input onChange={(e) => setUserName(e.target.value)} type="email" className="outline-none " autoFocus placeholder="Username" />
+                  <input onChange={(e) => setUserName(e.target.value)} type="text" className="outline-none " autoFocus placeholder="Username" />
                   <FaUser />
                 </div>
                 <div className="flex justify-between items-center gap-2 border-b pl-3 p-2 rounded-[15px] border-gray-300">

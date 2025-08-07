@@ -2,27 +2,47 @@ import "./login.css";
 import Lottie from "lottie-react";
 import loginLottie from "./Lottie/Login.json";
 import { FaEye, FaLock, FaUser } from "react-icons/fa";
-import { Link, NavLink, useNavigate } from "react-router";
+import { Link, Navigate, NavLink, useNavigate } from "react-router";
 import { CiCalculator1 } from "react-icons/ci";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { userFetch } from "../../features/UserSlice";
+import Loading from "../../Layout/Loading";
 
 const Register = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const user = useSelector((state) => state.userStore);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handle_Submitted = (e) => {
+
+   useEffect(() => {
+      if (user.user && !user.loading) {
+        navigate("/");
+      }
+    }, [user.user]);
+  
+  
+
+  const handle_Submitted = async (e) => {
     e.preventDefault();
 
-    const formDAta = new FormData(e.target);
-    const data = Object.fromEntries(formDAta.entries());
-    console.log(data);
+    try {
+      const formDAta = new FormData(e.target);
+      const data = Object.fromEntries(formDAta.entries());
+      // const {Username, name, password, repassword}
+      await dispatch(userFetch({ url: "/join/registration", payload: data, method: "post" }));
+      return navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const [showPassword, setShowPassword] = useState(false);
   console.log(user);
+    if (user.loading) {
+      return <Loading></Loading>;
+    }
   return (
     <div className="flex   justify-center h-[100vh] bg-bg items-center relative ">
       <NavLink className={"btn  absolute z-50 top-5 left-5"} to={"/"}>

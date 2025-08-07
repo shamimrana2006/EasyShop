@@ -1,21 +1,32 @@
 import React, { useEffect } from "react";
 import { IoBagHandleOutline } from "react-icons/io5";
-import { CiHeart, CiMenuKebab, CiSun, CiUser } from "react-icons/ci";
-import { FaBackward, FaFacebook, FaInstagram, FaLinkedin, FaSearch, FaTwitter } from "react-icons/fa";
-import { NavLink, useLocation } from "react-router";
+import { CiHeart, CiMenuKebab, CiSettings, CiSun, CiUser } from "react-icons/ci";
+import { FaBackward, FaCalendarMinus, FaFacebook, FaInstagram, FaLinkedin, FaMoon, FaSearch, FaTwitter } from "react-icons/fa";
+import { Link, NavLink, useLocation } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 
 import Loading from "../Layout/Loading";
+import { userFetch } from "../features/UserSlice";
+import { Navigate } from "react-router";
 const NavBar = () => {
   const userState = useSelector((state) => state.userStore);
-  const path = useLocation();
+  const location = useLocation();
+  const dispatch = useDispatch();
+  console.log(userState?.user?.payLoad?.isAdmin);
 
   // useEffect(() => {
   //   document.querySelector(".MenuVisible").classList.add("hidden");
   // }, [path]);
 
-  const themeToggle = () => {
-    document.documentElement.classList.toggle("dark");
+  useEffect(() => {
+    if (userState?.user?.payLoad?.isDarkMode) {
+      document.documentElement.classList.remove("dark");
+    } else {
+      document.documentElement.classList.add("dark");
+    }
+  }, [userState]);
+  const themeToggle = async () => {
+    await dispatch(userFetch({ url: "/join/theme-toggle", method: "get" }));
   };
 
   const searchButton = () => {
@@ -33,9 +44,13 @@ const NavBar = () => {
       document.querySelector(".MenuVisible").classList.add("hidden");
     }
   });
+  console.log(location.pathname.includes("/user/profile"));
 
   if (userState.loading) return <Loading />;
-
+  const logoutCall = () => {
+    <Navigate to={"/"} />;
+    dispatch(userFetch({ url: "/join/logout" }));
+  };
   const menuList = (
     <>
       <NavLink to={"/"}>Home</NavLink>
@@ -51,11 +66,12 @@ const NavBar = () => {
       <NavLink to={"/offers"}>Hot Offers</NavLink>
     </>
   );
+  const ifProfileSoHidden = location.pathname.includes("/user/profile") ? "" : "md:flex";
   return (
     <div className="sticky top-0 z-50">
       <div className="bg-bg text-text border-border">
         {/* topbar */}
-        <div className=" bg-bg container lg:flex hidden justify-between items-center py-2  focus:text-ptext ">
+        <div className={`bg-bg containerr hidden justify-between items-center py-2 ${ifProfileSoHidden} focus:text-ptext `}>
           <div className="socialIcons flex gap-1">
             <FaFacebook className=" p-[6px] flex items-center justify-center text-4xl bg-pbox rounded-[7px] " />
             <FaTwitter className=" p-[6px] flex items-center justify-center text-4xl bg-pbox rounded-[7px] " />
@@ -78,72 +94,110 @@ const NavBar = () => {
             </select>
           </div>
         </div>
-        <div className="border-b border-border"></div>
+        {ifProfileSoHidden ? <div className="border-b border-border"></div> : ""}
         {/* navbar */}
-        <div className="container relative py-3 flex justify-between items-center">
+        <div className="containerr relative py-3 flex justify-between items-center">
           <div className="fnd">
             <NavLink to={"/"}>
-              <h1 className="font-bold text-4xl text-text font-">ESP</h1>
+              <h1 className="font-bold text-4xl text-primary fontLogo">ESP</h1>
             </NavLink>
           </div>
-          <div className="inputBox z-50 flex gap-1  group p-2 px-5 items-center md:w-[60%]  border  border-border rounded-[14px] justify-between">
-            <FaBackward className="hidden mr-2 bkw" onClick={searchButton} />
-            <FaSearch className="text-text hidden md:block group-hover:w-[15px] origin-top-right transition-all duration-300 ease-in-out w-0  mr-2" />
-            <input type="text" className="searchINput md:w-full placeholder:text-ptext w-0 not-focus:w-0 md:not-focus:w-full  group-hover:w-full transition-all duration-300 ease-in-out group outline-none focus:outline-none border-none bg-transparent text-text" placeholder="Enter your product name..." />
-            <FaSearch onClick={searchButton} className="text-ptext  md:block" />
-          </div>
-          <div className="md:flex flex lnd  gap-3 font-bold items-center text-4xl justify-center">
-            <div className={`navITEMForUser gap-4 items-center justify-center ${userState.user ? "flex" : "hidden"} `}>
-              <div
-                className="relative group"
-                onContextMenu={(e) => {
-                  e.preventDefault();
-                  document.querySelector(".profileMenu").classList.toggle("hidden");
-                }}>
-                <div className="p-2 absolute bg-ptext backdrop-blur-2xl flex-col gap-2 profileMenu flex rounded-2xl top-8 hidden  items-center justify-center">
-                  <NavLink to={"/user/profile"} className="btn btn-small bg-primary cursor-pointer w-20">
-                    Profile
-                  </NavLink>
-                  <span className="btn btn-small bg-primary cursor-pointer w-20">Log Out</span>
-                </div>
-                <NavLink to={"/user/profile"}>
-                  <CiUser />
-                </NavLink>
-              </div>
-              <div className="relative">
-                <span className="absolute w-4 h-4 right-0 -top-1 text-[0.8rem] flex items-center justify-center text-white rounded-full bg-primary">5</span>
-
-                <CiHeart />
-              </div>
-              <div className="relative">
-                <span className="absolute w-4 h-4 right-0 -top-1 text-[0.8rem] flex items-center justify-center text-white rounded-full bg-primary">50</span>
-                <IoBagHandleOutline />
-              </div>
-              <button className="hidden md:block">
-                <CiSun className="" onClick={themeToggle} />
-              </button>
+          {location.pathname.includes("/user/profile") ? (
+            <></>
+          ) : (
+            <div className={`inputBox z-50 flex gap-1  group p-2 px-5 items-center md:w-[60%]  border  border-border rounded-[14px] justify-between  `}>
+              <FaBackward className="hidden mr-2 bkw" onClick={searchButton} />
+              <FaSearch className="text-text hidden md:block group-hover:w-[15px] origin-top-right transition-all duration-300 ease-in-out w-0  mr-2" />
+              <input type="text" className="searchINput md:w-full placeholder:text-ptext w-0 not-focus:w-0 md:not-focus:w-full  group-hover:w-full transition-all duration-300 ease-in-out group outline-none focus:outline-none border-none bg-transparent text-text" placeholder="Enter your product name..." />
+              <FaSearch onClick={searchButton} className="text-ptext  md:block" />
             </div>
-            <div className={`flex items-center ${userState.user ? "hidden" : ""}  justify-center gap-2`}>
+          )}
+          <div className="md:flex flex lnd  gap-3 font-bold items-center text-4xl justify-center">
+            <div className={`navITEMForUser gap-4 items-center justify-center ${userState?.user ? "flex" : "hidden"} `}>
+              <div className="relative group">
+                <div className="p-2 z-[99999] text-sm absolute  backdrop-blur-2xl flex-col gap-2 profileMenu rounded-2xl right-0 top-8 hidden group-hover:flex   justify-center">
+                  <NavLink to={"/user/profile"} className="  bg-ptext flex justify-between items-center text-[12px] p-[5px] rounded text-text cursor-pointer">
+                    Profile
+                    <CiUser />
+                  </NavLink>
+                  {userState?.user?.payLoad?.isAdmin ? (
+                    <Link to={"/user/dashboard"} className="  bg-ptext flex justify-between items-center gap-2 text-[12px] p-[5px] rounded text-text cursor-pointer ">
+                      Dashboard
+                      <FaCalendarMinus />
+                    </Link>
+                  ) : (
+                    <></>
+                  )}
+                  <button onClick={themeToggle} className=" bg-ptext text-[12px] text-center justify-between items-center flex p-[5px] rounded text-text">
+                    {!userState?.user?.payLoad?.isDarkMode ? (
+                      <>
+                        Light Mode
+                        <CiSun className="text-[20px]" />
+                      </>
+                    ) : (
+                      <>
+                        Dark Mode
+                        <FaMoon className="text-[12px]" />
+                      </>
+                    )}
+                  </button>
+                  <span onClick={logoutCall} className="  bg-red-600 text-[12px] p-[5px] rounded text-white  cursor-pointer ">
+                    Log Out
+                  </span>
+                </div>
+                <div
+                  onClick={() => {
+                    document.querySelector(".profileMenu").classList.toggle("!flex");
+                  }}
+                  to={"/user/profile"}>
+                  {" "}
+                  <div className={`relative items-center justify-center border-2 ${userState?.user?.payLoad?.isVerified?.value ? "border-green-500" : "border-yellow-300"} ${userState?.user?.payLoad?.isBand ? "!border-red-500" : ""} rounded-full  w-10 h-10 flex`}>
+                    <CiUser className="rounded-full bg-bg text-text p-1" />
+                  </div>
+                </div>
+              </div>
+              {location.pathname.includes("/user/profile") ? (
+                ""
+              ) : (
+                <>
+                  <div className="relative">
+                    <span className="absolute w-4 h-4 right-0 -top-1 text-[0.8rem] flex items-center justify-center text-white rounded-full bg-primary">5</span>
+
+                    <CiHeart />
+                  </div>
+                  <div className="relative">
+                    <span className="absolute w-4 h-4 right-0 -top-1 text-[0.8rem] flex items-center justify-center text-white rounded-full bg-primary">50</span>
+                    <IoBagHandleOutline />
+                  </div>
+                  <button onClick={() => document.querySelector(".MenuVisible").classList.toggle("hidden")} className="md:hidden block">
+                    <CiMenuKebab className="" />
+                  </button>
+                </>
+              )}
+            </div>
+            <div className={`flex items-center ${userState?.user ? "hidden" : ""}  justify-center gap-2`}>
               <NavLink to={"/auth/login"} className="btn ">
                 Sign Up
               </NavLink>
             </div>
-            <button onClick={() => document.querySelector(".MenuVisible").classList.toggle("hidden")} className="md:hidden block">
-              <CiMenuKebab className="" />
-            </button>
-            <div className="absolute container hidden border MenuVisible top-12 text-sm bg-bg p-2 border-border rounded-[8px] ">
+            {/* {"/user/profile" == location.pathname ? (
+              ""
+            ) : (
+             
+            )} */}
+            <div className="absolute containerr hidden border MenuVisible top-12 text-sm bg-bg p-2 border-border rounded-[8px] ">
               <ul className="flex menuListLargeDevice md:text-sm flex-col  justify-center gap-2  font-bold uppercase">{menuList}</ul>
             </div>
           </div>
         </div>
 
-        <div className="border-b border-border"></div>
+        {ifProfileSoHidden ? <div className="border-b border-border"></div> : ""}
 
         {/* last navbar menu */}
-        <div className="md:flex hidden container justify-center bg-bg text-text gap-2 py-3  items-center">
+        <div className={`  hidden containerr justify-center bg-bg text-text gap-2 py-3  items-center ${ifProfileSoHidden} `}>
           <ul className="flex z-50 menuListLargeDevice justify-center items-center lg:gap-18 md:gap-5 font-bold uppercase">{menuList}</ul>
         </div>
-        <div className="border-b border-border"></div>
+        {ifProfileSoHidden ? <div className="border-b border-border"></div> : ""}
       </div>
     </div>
   );

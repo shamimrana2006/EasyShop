@@ -9,7 +9,7 @@ import NotFound from "../pages/NotFound";
 import { AnimatePresence } from "framer-motion";
 import { PageTransitionFade } from "../components/PageTnsition";
 import PrivetRout from "../pages/privetPage/Private";
-
+import ProfileLayout from "../Layout/ProfileLayout";
 
 const Router_Custom = () => {
   const location = useLocation();
@@ -23,10 +23,15 @@ const Router_Custom = () => {
                 path="profile"
                 element={
                   <PrivetRout>
-                    <Profile />
+                    <ProfileLayout>
+                    </ProfileLayout>
                   </PrivetRout>
                 }
-              />
+              >
+                <Route index element={<Profile/>}></Route>
+                <Route path="security" element="shamim"></Route>
+                <Route path="*" element={<NotFound></NotFound>}></Route>
+              </Route>
             </Route>
           </Route>
           <Route path="/auth" element={<Auth />}>
