@@ -53,6 +53,20 @@ const register_controller = async (req, res) => {
       password: hashPassword,
     }).save();
 
+    // --------------------------------
+    const token = await tokenCreate(
+      newUser.toObject(),
+      process.env.SECRETE_JWT_KEY,
+      "20m"
+    );
+    const isSecure = req.secure;
+    cookieGenerate(res, {
+      cookieName: "token",
+      cookieValue: token,
+      isSecure,
+      maxAge: 20 * 60 * 1000,
+    });
+    // --------------------------------
     const { CreateAt, email } = newUser;
 
     success_res(res, {
@@ -76,11 +90,10 @@ const login_controller = async (req, res) => {
     if (!UserName) {
       return error_res(res, { status_code: 401, message: "UserName required" });
     }
-    console.time("mongo")
+    console.time("mongo");
     const findingUser = await Users_collection.findOne({ UserName });
-    console.timeEnd("mongo")
+    console.timeEnd("mongo");
     console.log(findingUser);
-    
 
     if (!findingUser) {
       return error_res(res, { status_code: 400, message: "user not found" });
@@ -142,6 +155,26 @@ const profile_controller = (req, res, next) => {
     message: "success",
     payLoad: UserDAta,
   });
+};
+
+const LogoutAT = async (req, res) => {
+  try {
+    const user = req.user.toObject();
+    if (!user) {
+      error_res(res);
+    }
+    const isSecure = req.secure;
+    res.clearCookie("token", {
+      path: "/", // যদি সেট করে থাকো
+      httpOnly: isSecure, // যদি আগের cookie এ ছিল
+      secure: isSecure, // যদি https এ ছিল
+      sameSite: isSecure ? "None" : "lax", // optional
+    });
+
+    success_res(res, { message: "logout successfully", status_code: 200 });
+  } catch (error) {
+    error_res(res, { message: error.message, status_code: error.status });
+  }
 };
 
 const otp_sender_verify = async (req, res) => {
@@ -243,20 +276,66 @@ const reset_password_otp = async (req, res) => {
 };
 
 const reset_password_with_otp = async (req, res) => {
-  if (!req.isValidOTP) {
-    return error_res(res, {
-      status_code: 401,
-      message: "otp invalid and unverified",
+  try {
+    if (!req.isValidOTP) {
+      return error_res(res, {
+        status_code: 401,
+        message: "otp invalid and unverified",
+      });
+    }
+    const { email, NewPassword, ConfirmPassword } = req.body;
+    if (!NewPassword)
+      return error_res(res, {
+        message: "new password required",
+        status_code: 404,
+      });
+    if (!ConfirmPassword)
+      return error_res(res, {
+        message: "new confirm password required",
+        status_code: 404,
+      });
+    if (NewPassword !== ConfirmPassword)
+      return error_res(res, {
+        message: "NewPassword not match",
+        status_code: 401,
+      });
+    const newPassword = await CreateHashText(NewPassword);
+    const user = await Users_collection.findOneAndUpdate(
+      { email },
+      {
+        $set: {
+          password: newPassword,
+          "isVerified.value": true,
+          "isVerified.verifyAT": new Date.now(),
+        },
+      }
+    );
+    success_res(res, {
+      message: "user password changed successfully",
+      status_code: 201,
     });
+  } catch (error) {
+    error_res(res, { message: error.message, status_code: error.status });
   }
-  const user = req?.user.toObject();
-  if (!user) {
-    return error_res(res, { status_code: 404, message: "user not found" });
-  }
-  const { email } = user;
-  await Users_collection.findOneAndUpdate({ email }, { password: true });
 };
 
+const user_updating = async (req, res) => {
+  const { password, ...UserDAta } = req.user.toObject();
+  const { email, UserName, name } = req.body;
+  // if (UserDAta?.isVerified?.value) {
+  //   return error_res(res, { message: "user not verified" });
+  // }
+  if ((email, !UserName, !name)) {
+    await Users_collection.findOneAndUpdate(
+      { email: UserDAta.email },
+      { email }
+    );
+    return success_res(res, {
+      message: "your email changed",
+      status_code: 201,
+    });
+  }
+};
 module.exports = {
   register_controller,
   login_controller,
@@ -267,4 +346,6 @@ module.exports = {
   CheckAdmin,
   reset_password_otp,
   reset_password_with_otp,
+  user_updating,
+  LogoutAT,
 };

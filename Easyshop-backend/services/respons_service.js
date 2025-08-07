@@ -1,6 +1,6 @@
 const success_res = (
   res,
-  { status_code = 500, message = "success", payLoad = {} }
+  { status_code = 200, message = "success", payLoad = {} }
 ) => {
   res.status(status_code).json({
     status: status_code,

@@ -1,23 +1,37 @@
 # **EasyShop** _Backend_
-### Endpoint 
-_http://localhost:2006_
-########
+
+### Endpoint
+
+_http://localhost:port_
+#####
 _https://easy-shop-backend-mocha.vercel.app_
-- /join
-    - /registration
-    - /login
-    - /resetDB
-    - /profile
-    - /get-otp-verify
-    - /check-otp-verify
-    - /reset_password_opt
-    - /reset_password
-- /user
-- /admin
-- /product
-- /seller 
+
+  - /join
+    - **/theme-toggle**
+      - (get)// just logged in
+    - **/registration**
+      - (post)// UserName,name,password,repassword (UserName=email/text)
+    - **/login**
+      - (post)// UserName,password
+    - **/resetDB**
+      - (get)// reset mongoDB
+    - **/profile**
+      - (get)// get data when logged in
+    - **/verify-account-otp**
+      - (get) // logged in
+    - **/verify-account**
+      - (post) // email,otp
+    - **/reset-pass-otp**
+      - (post) // email
+    - **/reset-password**
+      - (post) // email,otp ,NewPassword,ConfirmPassword
+  - /user
+  - /admin
+  - /product
+  - /seller
 
 ### Deploy in vercel
+
 - **deploy issue** // use vercel.json for nested routing
 - **.env handle**
   - mongoDB url (atlas and local) for offline codding
@@ -43,7 +57,18 @@ _https://easy-shop-backend-mocha.vercel.app_
     -passport initialize not passport-jwt its only passport when you use any package from passport.js then use it must like passport-jwt, passport-google, passport-github
 
 - other issue :
+  - **import / ES6** // when you use import then use export only but when you use require then use must be module.export
+  - **schema email candidate key** // must be use sparse: true because it ignore duplicate error for several time save empty email
+  - **use validator middleware** // because ifelse create huge ugly code
 
-    - **import / ES6** // when you use import then use export only but when you use require then use must be module.export 
-    - **schema email candidate key** // must be use sparse: true because it ignore duplicate error for several time save empty email
-    - **use validator middleware** // because ifelse create huge ugly code
+### .ENV file setup :
+
+- **port** = for localhost
+- **URL_mongoDB** =
+- **salt** = at least controllable value like under 10
+- **SECRETE_JWT_KEY** =
+- **CORS_LOCAL** = local nothing but production e something
+- **SMTP_USER** =
+- **SMTP_PASS** =
+- **origin1** = //localhost
+- **origin2** = //production

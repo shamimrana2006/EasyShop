@@ -16,8 +16,6 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    unique: [true, "email already Exist"],
-    sparse: true,
     lowercase: true,
     trim: true,
     match: [
@@ -29,6 +27,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     minlength: [6, "minimum password required 6"],
     required: [true, "Password is required"],
+  },
+  isDarkMode: {
+    type: Boolean,
+    default: false,
   },
   isAdmin: {
     type: Boolean,
