@@ -3,32 +3,36 @@
 ### Endpoint
 
 _http://localhost:port_
+
 #####
+
 _https://easy-shop-backend-mocha.vercel.app_
 
-  - /join
-    - **/theme-toggle**
-      - (get)// just logged in
-    - **/registration**
-      - (post)// UserName,name,password,repassword (UserName=email/text)
-    - **/login**
-      - (post)// UserName,password
-    - **/resetDB**
-      - (get)// reset mongoDB
-    - **/profile**
-      - (get)// get data when logged in
-    - **/verify-account-otp**
-      - (get) // logged in
-    - **/verify-account**
-      - (post) // email,otp
-    - **/reset-pass-otp**
-      - (post) // email
-    - **/reset-password**
-      - (post) // email,otp ,NewPassword,ConfirmPassword
-  - /user
-  - /admin
-  - /product
-  - /seller
+- /join
+  - **/theme-toggle**
+    - (get)// just logged in
+  - **/registration**
+    - (post)// UserName,name,password,repassword (UserName=email/text)
+  - **/login**
+    - (post)// UserName,password
+  - **/resetDB**
+    - (get)// reset mongoDB
+  - **/profile**
+    - (get)// get data when logged in
+  - **/verify-account-otp**
+    - (get) // logged in
+  - **/verify-account**
+    - (post) // email,otp
+  - **/reset-pass-otp**
+    - (post) // email
+  - **/reset-password**
+    - (post) // email,otp ,NewPassword,ConfirmPassword
+  - **/logout**
+    - (get) // with credential must
+- /user
+- /admin
+- /product
+- /seller
 
 ### Deploy in vercel
 

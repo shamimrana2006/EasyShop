@@ -7,7 +7,7 @@ import { CiCalculator1 } from "react-icons/ci";
 
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { userFetch } from "../../features/UserSlice";
+import { resetstate, userFetch } from "../../features/UserSlice";
 import Loading from "../../Layout/Loading";
 
 const Register = () => {
@@ -16,14 +16,14 @@ const Register = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-
-   useEffect(() => {
-      if (user.user && !user.loading) {
-        navigate("/");
-      }
-    }, [user.user]);
-  
-  
+  useEffect(() => {
+    if (user.user && !user.loading) {
+      navigate("/");
+    } else {
+      console.log("user not found");
+      dispatch(resetstate());
+    }
+  }, [user.user]);
 
   const handle_Submitted = async (e) => {
     e.preventDefault();
@@ -31,18 +31,20 @@ const Register = () => {
     try {
       const formDAta = new FormData(e.target);
       const data = Object.fromEntries(formDAta.entries());
-      // const {Username, name, password, repassword}
+
       await dispatch(userFetch({ url: "/join/registration", payload: data, method: "post" }));
-      return navigate("/");
+      // if (user.user && !user.loading) {
+      //   return navigate("/");
+      // }
     } catch (error) {
       console.log(error);
     }
   };
 
   console.log(user);
-    if (user.loading) {
-      return <Loading></Loading>;
-    }
+  if (user.loading) {
+    return <Loading></Loading>;
+  }
   return (
     <div className="flex   justify-center h-[100vh] bg-bg items-center relative ">
       <NavLink className={"btn  absolute z-50 top-5 left-5"} to={"/"}>
@@ -70,7 +72,7 @@ const Register = () => {
                 <FaEye className={showPassword ? "hidden" : "block"} onClick={() => setShowPassword(true)} />
                 <FaLock className={showPassword ? "block" : "hidden"} onClick={() => setShowPassword(false)} />
               </div>
-              <span className="text-primary"></span>
+              <span className="text-primary">{user?.error ? (user?.error?.payload?.message ? "" : user?.error?.payload == "user not found" ? "" : user?.error?.payload) : ""}</span>
               <button className="btn btn-sm mb-4 ">Register</button>
             </form>
             <span className="">

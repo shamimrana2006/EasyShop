@@ -6,7 +6,7 @@ import { Link, NavLink, useLocation } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 
 import Loading from "../Layout/Loading";
-import { userFetch } from "../features/UserSlice";
+import { resetstate, userFetch, userLogout } from "../features/UserSlice";
 import { Navigate } from "react-router";
 const NavBar = () => {
   const userState = useSelector((state) => state.userStore);
@@ -49,7 +49,8 @@ const NavBar = () => {
   if (userState.loading) return <Loading />;
   const logoutCall = () => {
     <Navigate to={"/"} />;
-    dispatch(userFetch({ url: "/join/logout" }));
+    // dispatch(userFetch({ url: "/join/logout" }))
+    dispatch(userLogout());
   };
   const menuList = (
     <>
@@ -99,7 +100,7 @@ const NavBar = () => {
         <div className="containerr relative py-3 flex justify-between items-center">
           <div className="fnd">
             <NavLink to={"/"}>
-              <h1 className="font-bold text-4xl text-primary fontLogo">ESP</h1>
+              <h1 className="font-bold md:text-4xl text-primary fontLogo">E-Shop</h1>
             </NavLink>
           </div>
           {location.pathname.includes("/user/profile") ? (

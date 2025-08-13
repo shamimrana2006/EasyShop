@@ -1,27 +1,31 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { axiosUserInstance } from "../services/UserAPIcall";
 
-export const userFetch = createAsyncThunk("user/fetchData", async ({ method = "get", payload = {}, url = "" }) => {
+export const userFetch = createAsyncThunk("user/fetchData", async ({ method = "get", payload = {}, url = "" }, { rejectWithValue }) => {
   try {
     if (method == "get") {
-      return await axiosUserInstance[method](url)
-        .then((res) => {
-          // console.log(res.data);
+      const res = await axiosUserInstance[method](url);
 
-          return res.data;
-        })
-        .catch((err) => console.log(err));
+      return res.data;
     } else {
-      return await axiosUserInstance[method](url, payload)
-        .then((res) => {
-          // console.log(res.data);
-
-          return res.data;
-        })
-        .catch((err) => console.log(err));
+      const res = await axiosUserInstance[method](url, payload);
+      return res.data;
     }
   } catch (error) {
     console.log(error);
+    if (error.response && error.response.data?.message) {
+      return rejectWithValue(error.response.data.message); // সার্ভারের error message
+    }
+    return rejectWithValue(error); // নেটওয়ার্ক বা অন্য error
+  }
+});
+
+export const userLogout = createAsyncThunk("user/logOout", async (_, { rejectWithValue }) => {
+  try {
+    const res = await axiosUserInstance.get("/join/logout");
+    return res.data;
+  } catch (error) {
+    return rejectWithValue(error);
   }
 });
 
@@ -38,6 +42,9 @@ const UserSlice = createSlice({
       console.log(state.user);
       state.loading = false;
     },
+    resetstate: (state) => {
+      ((state.user = null), (state.loading = false), (state.error = null));
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -49,13 +56,27 @@ const UserSlice = createSlice({
         // console.log(action);
 
         state.user = action.payload;
+        console.log(action);
       })
       .addCase(userFetch.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+
+        state.error = action;
+      })
+      .addCase(userLogout.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(userLogout.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = null;
+      })
+      .addCase(userLogout.rejected, (state, action) => {
+        state.loading = false;
+
+        state.error = action;
       });
   },
 });
 
 export const userStore = UserSlice.reducer;
-export const { userObserve } = UserSlice.actions;
+export const { userObserve, resetstate } = UserSlice.actions;

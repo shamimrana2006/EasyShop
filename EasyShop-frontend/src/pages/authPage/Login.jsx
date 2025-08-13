@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Loading from "../../Layout/Loading";
-import { userFetch } from "../../features/UserSlice";
+import { resetstate, userFetch } from "../../features/UserSlice";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -24,6 +24,8 @@ const Login = () => {
   useEffect(() => {
     if (user.user && !user.loading) {
       navigate("/");
+    } else {
+      dispath(resetstate());
     }
   }, [user.user]);
 
@@ -65,7 +67,7 @@ const Login = () => {
                   <FaEye className={showPassword ? "hidden" : "block"} onClick={() => setShowPassword(true)} />
                   <FaLock className={showPassword ? "block" : "hidden"} onClick={() => setShowPassword(false)} />
                 </div>
-                <span className="text-primary"></span>
+                <span className="text-primary">{user?.error ? (user?.error?.payload?.message ? "" : user?.error?.payload) : ""}</span>
                 <button className="btn btn-sm mt-4">Login</button>
                 <span className=" mt-4">
                   New to EasyShop{" "}
