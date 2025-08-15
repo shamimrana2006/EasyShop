@@ -130,9 +130,7 @@ const NavBar = () => {
                   )}
                   <button onClick={themeToggle} className=" ">
                     <div
-                      onClick={() => {
-                        setIsDark(theme);
-                      }}
+                    
                       style={{
                         boxShadow: "inset 0 0 10px rgba(0,0,0,0.5)",
                       }}
