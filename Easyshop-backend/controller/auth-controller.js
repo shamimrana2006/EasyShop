@@ -91,9 +91,9 @@ const login_controller = async (req, res) => {
     if (!UserName) {
       return error_res(res, { status_code: 401, message: "UserName required" });
     }
-    console.time("mongo");
+
     const findingUser = await Users_collection.findOne({ UserName });
-    console.timeEnd("mongo");
+
     ////(findingUser);
 
     if (!findingUser) {
