@@ -12,7 +12,7 @@ import PrivetRout from "../pages/privetPage/Private";
 import ProfileLayout from "../Layout/ProfileLayout";
 import ForgotPassword from "../pages/authPage/ForgotPassword";
 import { ToastContainer } from "react-toastify";
-import ForgotPasswordOTP from "../pages/authPage/forgotPasswordOTP";
+import ForgotPasswordOTP from "../pages/authPage/ForgotPasswordOTP";
 import NewPass from "../pages/authPage/NewPass";
 
 const Router_Custom = () => {
