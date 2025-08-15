@@ -4,46 +4,64 @@ import Lottie from "lottie-react";
 import loginLottie from "./Lottie/Login.json";
 import { FaEye, FaLock, FaUser } from "react-icons/fa";
 import { Link, NavLink, useLocation, useNavigate } from "react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Loading from "../../Layout/Loading";
-import { resetPassOTP, resetstate, userFetch } from "../../features/UserSlice";
+import { resetOTPTOKenCreate, resetPassOTP, resetstate, userFetch } from "../../features/UserSlice";
 import { toast } from "react-toastify";
 
-const ForgotPassword = () => {
-  const dispath = useDispatch();
+const ForgotPasswordOTP = () => {
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
   const [Email, setEmail] = useState("");
+  const OTPREf = useRef("otp");
   const user = useSelector((state) => {
     return state.userStore;
   });
 
-  console.log(localStorage.getItem("ResetPassEmail"));
+  useEffect(() => {
+    if (user.user && !user.loading) {
+      navigate("/");
+    } else {
+      dispatch(resetstate());
+    }
+  }, [user.user]);
+
+  const CheckOTP = async (e) => {
+    e.preventDefault();
+    const email = localStorage.getItem("ResetPassEmail");
+
+    const otp = OTPREf.current.value;
+
+    dispatch(resetOTPTOKenCreate({ email, otp })).then((res) => {
+      if (resetOTPTOKenCreate.fulfilled.match(res)) {
+        console.log("shamim kaj korche opt valid ache");
+      } else {
+        console.log("kaj korche na otp");
+      }
+    });
+
+    // const result = dispatch(resetPassOTP({ email: Email })).then((res) => {
+    //   if (resetPassOTP.fulfilled.match(res)) {
+    //     navigate("/auth/forgot_OTP");
+    //     return res;
+    //   } else {
+    //     return Promise.reject(res);
+    //   }
+    // });
+
+    // toast.promise(result, {
+    //   pending: "OTP sending...",
+    //   success: "reset otp send successfully",
+    //   error: user?.error?.message || "something went wrong",
+    // });
+  };
 
   if (user.loading) {
     return <Loading></Loading>;
   }
-
-  const HandleSendOTP = async (e) => {
-    e.preventDefault();
-    if (!Email) return;
-    const result = dispath(resetPassOTP({ email: Email })).then((res) => {
-      if (resetPassOTP.fulfilled.match(res)) {
-        localStorage.setItem("ResetPassEmail", Email);
-        navigate("/auth/forgot_OTP");
-        return res;
-      } else {
-        return Promise.reject(res);
-      }
-    });
-
-    toast.promise(result, {
-      pending: "OTP sending...",
-      success: "reset otp send successfully",
-      error: user?.error?.message || "something went wrong",
-    });
-  };
 
   return (
     <div className="flex justify-center h-[100vh] bg-bg items-center relative ">
@@ -55,11 +73,11 @@ const ForgotPassword = () => {
         {/* lottie box start--------------- */}
         <div className="loginBox flex-col-reverse !text-white flex  md:flex-row  gap-5 justify-center items-center backdrop-blur-[10px] border-t-[1px] border-l md:px-20  shadow-2xl drop-shadow-2xl border-[#ffffff3f] p-10 rounded">
           <div>
-            <h1 className="text-lg hidden md:block uppercase  text-center pb-4">reset password</h1>
-            <form onSubmit={HandleSendOTP}>
+            <h1 className="text-lg hidden md:block uppercase  text-center pb-4">valid otp</h1>
+            <form onSubmit={CheckOTP}>
               <div className="flex flex-col gap-2 mt-2">
                 <div className="flex justify-between items-center gap-2 border-b pl-3 p-2 rounded-[15px] border-gray-300">
-                  <input onChange={(e) => setEmail(e.target.value)} type="email" required className="outline-none " autoFocus placeholder="Email/phone" />
+                  <input ref={OTPREf} onChange={(e) => setEmail(e.target.value)} type="number" required className="outline-none " autoFocus placeholder="OTP" />
                   <FaUser />
                 </div>
 
@@ -92,4 +110,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default ForgotPasswordOTP;

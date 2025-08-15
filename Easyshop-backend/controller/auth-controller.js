@@ -6,6 +6,7 @@ const { cookieGenerate } = require("../services/cookiegenarator");
 const { CreateHashText } = require("../services/hashing");
 const { SendMail } = require("./Nodemailer");
 const { otpCreator, OTPHTML, OTP_Service } = require("../services/otpSrvice");
+
 const register_controller = async (req, res) => {
   const { name, UserName, password, repassword } = req.body;
   if (!UserName) {
@@ -251,13 +252,13 @@ const reset_password_otp = async (req, res) => {
   try {
     const email = req.body?.email;
     console.log(req.body);
-    
+
     if (!email) {
       return error_res(res, { status_code: 404, message: "email required" });
     }
     const user = await Users_collection.findOne({ email });
-    console.log(email);
-    console.log("ami reset passowrd otp user : ", user);
+    // console.log(email);
+    // console.log("ami reset passowrd otp user : ", user);
 
     if (!user) {
       return error_res(res, { status_code: 400, message: "user not found" });
@@ -277,7 +278,41 @@ const reset_password_otp = async (req, res) => {
   }
 };
 
-const reset_password_with_otp = async (req, res) => {
+const reset_password_otp_token = async (req, res) => {
+  try {
+    const isSecure = req.secure;
+    const user = req.user.toObject();
+
+ 
+    
+    if (req.isValidOTP) {
+      console.log("shamim");
+      const token = await tokenCreate(user, "ssaa", "5m");
+
+      cookieGenerate(res, {
+        cookieName: "resetPassToken",
+        cookieValue: token,
+        isSecure,
+        maxAge: 5 * 60 * 1000,
+      });
+      return success_res(res, {
+        status_code: 200,
+        message: "reset token valid for 5 minutes",
+        payLoad: token,
+      });
+    }
+  } catch (error) {
+    error_res(res, {
+      status_code: 400,
+      message: {
+        error: error.message,
+        cause: "reset password token creation failed",
+      },
+    });
+  }
+};
+
+const reset_password_token = async (req, res) => {
   try {
     if (!req.isValidOTP) {
       return error_res(res, {
@@ -347,7 +382,7 @@ module.exports = {
   verificationUpdating,
   CheckAdmin,
   reset_password_otp,
-  reset_password_with_otp,
+  reset_password_otp_token,
   user_updating,
   LogoutAT,
 };

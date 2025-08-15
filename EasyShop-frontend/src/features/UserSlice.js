@@ -44,6 +44,14 @@ export const resetPassOTP = createAsyncThunk("user/resetPassOTP", async ({ email
     return rejectWithValue(error);
   }
 });
+export const resetOTPTOKenCreate = createAsyncThunk("user/OTPTokenCreate", async ({ email, otp }, { rejectWithValue }) => {
+  try {
+    const res = await axiosUserInstance.post("/join/reset_password_otp_token", { email, otp });
+    return res.data;
+  } catch (error) {
+    return rejectWithValue(error);
+  }
+});
 
 const UserSlice = createSlice({
   name: "user",
@@ -73,7 +81,7 @@ const UserSlice = createSlice({
         // console.log(action);
 
         state.user = action.payload;
-        state.theme = action.payload.payLoad.isDarkMode
+        state.theme = action.payload.payLoad.isDarkMode;
         console.log(action);
       })
       .addCase(userFetch.rejected, (state, action) => {
@@ -114,6 +122,18 @@ const UserSlice = createSlice({
         state.theme = action?.payload?.payLoad?.isDarkMode;
       })
       .addCase(ThemeToggle.rejected, (state, action) => {
+        state.loading = false;
+        state.message = "";
+        state.error = action;
+      })
+      .addCase(resetOTPTOKenCreate.pending, (state) => {
+        state.loading = false;
+      })
+      .addCase(resetOTPTOKenCreate.fulfilled, (state, action) => {
+        state.loading = false;
+        state.message = { action, state: "success" };
+      })
+      .addCase(resetOTPTOKenCreate.rejected, (state, action) => {
         state.loading = false;
         state.message = "";
         state.error = action;

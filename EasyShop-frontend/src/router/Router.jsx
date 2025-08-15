@@ -12,6 +12,7 @@ import PrivetRout from "../pages/privetPage/Private";
 import ProfileLayout from "../Layout/ProfileLayout";
 import ForgotPassword from "../pages/authPage/ForgotPassword";
 import { ToastContainer } from "react-toastify";
+import ForgotPasswordOTP from "../pages/authPage/forgotPasswordOTP";
 
 const Router_Custom = () => {
   const location = useLocation();
@@ -39,6 +40,7 @@ const Router_Custom = () => {
               <Route path="Register" element={<Register />} />
               <Route path="login" element={<Login />} />
               <Route path="forgot_password" element={<ForgotPassword />} />
+              <Route path="forgot_OTP" element={<ForgotPasswordOTP />} />
             </Route>
             <Route
               path="/private"

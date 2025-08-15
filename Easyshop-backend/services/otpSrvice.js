@@ -2,7 +2,9 @@ const { SendMail } = require("../controller/Nodemailer");
 const { Users_collection } = require("../models/MongoDB_model");
 const { CreateHashText } = require("./hashing");
 
-const otpCreator = Math.floor(100000 + Math.random() * 900000).toString();
+const otpCreator = () => {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+};
 const OTPHTML = (OTP) => {
   return `
   <!DOCTYPE html>
@@ -76,7 +78,10 @@ const OTPHTML = (OTP) => {
 
 const OTP_Service = async (email, reason) => {
   try {
-    const OTP = otpCreator;
+   
+
+    const OTP = await otpCreator();
+   
     const body = OTPHTML(OTP);
     const OTPHash = await CreateHashText(OTP);
 
