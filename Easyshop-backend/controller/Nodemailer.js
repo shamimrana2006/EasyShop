@@ -21,12 +21,12 @@ const SendMail = async (sender_mail, subject, body) => {
       html: body,
     })
     .then((info) => {
-      console.log("Message sent: %s", info.messageId);
-      console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+      ////("Message sent: %s", info.messageId);
+      ////("Preview URL: %s", nodemailer.getTestMessageUrl(info));
       return info.messageId;
     })
     .catch((err) => {
-      console.log(err);
+      ////(err);
       return err.message;
     });
 };

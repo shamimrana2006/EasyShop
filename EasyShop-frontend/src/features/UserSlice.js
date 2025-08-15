@@ -12,7 +12,7 @@ export const userFetch = createAsyncThunk("user/fetchData", async ({ method = "g
       return res.data;
     }
   } catch (error) {
-    console.log(error);
+    ////(error);
     if (error.response && error.response.data?.message) {
       return rejectWithValue(error.response.data.message); // সার্ভারের error message
     }
@@ -47,9 +47,12 @@ export const resetPassOTP = createAsyncThunk("user/resetPassOTP", async ({ email
 export const resetOTPTOKenCreate = createAsyncThunk("user/OTPTokenCreate", async ({ email, otp }, { rejectWithValue }) => {
   try {
     const res = await axiosUserInstance.post("/join/reset_password_otp_token", { email, otp });
+    console.log(res);
+    
     return res.data;
   } catch (error) {
-    return rejectWithValue(error);
+    console.log(error);
+    return rejectWithValue(error.response.data);
   }
 });
 
@@ -64,7 +67,7 @@ const UserSlice = createSlice({
   reducers: {
     userObserve: (state, action) => {
       state.user = action.payload;
-      console.log(state.user);
+      ////(state.user);
       state.loading = false;
     },
     resetstate: (state) => {
@@ -78,11 +81,11 @@ const UserSlice = createSlice({
       })
       .addCase(userFetch.fulfilled, (state, action) => {
         state.loading = false;
-        // console.log(action);
+        // ////(action);
 
         state.user = action.payload;
         state.theme = action.payload.payLoad.isDarkMode;
-        console.log(action);
+        ////(action);
       })
       .addCase(userFetch.rejected, (state, action) => {
         state.loading = false;
@@ -101,7 +104,7 @@ const UserSlice = createSlice({
         state.error = action;
       })
       .addCase(resetPassOTP.pending, (state) => {
-        state.loading = true;
+        state.loading = false;
       })
       .addCase(resetPassOTP.fulfilled, (state, action) => {
         state.loading = false;

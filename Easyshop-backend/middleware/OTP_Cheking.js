@@ -6,7 +6,7 @@ const otp_Checking = async (req, res, next) => {
   try {
     const email = req.body?.email
     const otp = req.body?.otp
-    console.log(email,otp);
+    ////(email,otp);
     
     
     if (!email) {
@@ -23,7 +23,7 @@ const otp_Checking = async (req, res, next) => {
     const { value, CreateAT } = Otp;
     const isValidOTP = await bcrypt.compare(otp, value);
     if (!isValidOTP) {
-      // console.log("shamimmmmmmmmmmmmmmmmmmmmmmm");
+      // ////("shamimmmmmmmmmmmmmmmmmmmmmmm");
       return error_res(res, { status_code: 400, message: "invalid OTP" });
     }
     if (new Date(CreateAT).getTime() < Date.now()) {

@@ -14,6 +14,7 @@ const {
   user_updating,
   LogoutAT,
   reset_password_otp_token,
+  token_checkFor_resetPass,
 } = require("../controller/auth-controller");
 const { otp_Checking } = require("../middleware/OTP_Cheking");
 const { theme_toggling } = require("../controller/theme-toggle");
@@ -42,6 +43,10 @@ userManagement_router.post(
   "/reset_password_otp_token",
   otp_Checking,
   reset_password_otp_token
+);
+userManagement_router.post(
+  "/reset_password_otp_token",
+  token_checkFor_resetPass
 );
 userManagement_router.post("/update-user-info", Check_user_log, user_updating);
 

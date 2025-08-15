@@ -6,7 +6,7 @@ const { cookieGenerate } = require("../services/cookiegenarator");
 const { CreateHashText } = require("../services/hashing");
 const { SendMail } = require("./Nodemailer");
 const { otpCreator, OTPHTML, OTP_Service } = require("../services/otpSrvice");
-
+//register
 const register_controller = async (req, res) => {
   const { name, UserName, password, repassword } = req.body;
   if (!UserName) {
@@ -76,14 +76,14 @@ const register_controller = async (req, res) => {
       payLoad: { name, UserName, CreateAt, email },
     });
   } catch (error) {
-    console.log(error);
+    ////(error);
     // const errorMessage = Object.values(error.errors).map((err) => {
     //   return err.message;
     // });
     error_res(res, { status_code: 400, message: error.message });
   }
 };
-
+//login
 const login_controller = async (req, res) => {
   try {
     const { UserName, password } = req.body;
@@ -94,7 +94,7 @@ const login_controller = async (req, res) => {
     console.time("mongo");
     const findingUser = await Users_collection.findOne({ UserName });
     console.timeEnd("mongo");
-    console.log(findingUser);
+    ////(findingUser);
 
     if (!findingUser) {
       return error_res(res, { status_code: 400, message: "user not found" });
@@ -148,7 +148,7 @@ const reset_db_controller = async (req, res) => {
     error_res(res, { status_code: 401, message: error.message });
   }
 };
-
+//profile data
 const profile_controller = (req, res, next) => {
   const { password, ...UserDAta } = req.user.toObject();
   success_res(res, {
@@ -157,7 +157,7 @@ const profile_controller = (req, res, next) => {
     payLoad: UserDAta,
   });
 };
-
+//logout
 const LogoutAT = async (req, res) => {
   try {
     const user = req.user.toObject();
@@ -177,12 +177,12 @@ const LogoutAT = async (req, res) => {
     error_res(res, { message: error.message, status_code: error.status });
   }
 };
-
+//account verifying opt
 const otp_sender_verify = async (req, res) => {
   try {
     const { password, ...UserDAta } = req.user.toObject();
     if (UserDAta?.isVerified?.value) {
-      console.log(typeof UserDAta?.isVerified?.value);
+      ////(typeof UserDAta?.isVerified?.value);
 
       return error_res(res, {
         status_code: 401,
@@ -208,11 +208,11 @@ const otp_sender_verify = async (req, res) => {
       message: responseOPTSERvice,
     });
   } catch (error) {
-    console.log(error);
+    ////(error);
     error_res(res, { status_code: 400, message: error.message });
   }
 };
-
+//account verification after otp
 const verificationUpdating = async (req, res) => {
   try {
     const { UserName } = req.user.toObject();
@@ -234,7 +234,7 @@ const verificationUpdating = async (req, res) => {
     });
   } catch (error) {}
 };
-
+//admin check
 const CheckAdmin = async (req, res, next) => {
   try {
     const { isAdmin } = req.user.toObject();
@@ -247,18 +247,18 @@ const CheckAdmin = async (req, res, next) => {
     return error_res(res, { status_code: 400, message: "unAuthorized user" });
   }
 };
-
+//reset pass otp geting
 const reset_password_otp = async (req, res) => {
   try {
     const email = req.body?.email;
-    console.log(req.body);
+    ////(req.body);
 
     if (!email) {
       return error_res(res, { status_code: 404, message: "email required" });
     }
     const user = await Users_collection.findOne({ email });
-    // console.log(email);
-    // console.log("ami reset passowrd otp user : ", user);
+    // ////(email);
+    // ////("ami reset passowrd otp user : ", user);
 
     if (!user) {
       return error_res(res, { status_code: 400, message: "user not found" });
@@ -270,23 +270,21 @@ const reset_password_otp = async (req, res) => {
       message: responseOTP,
     });
   } catch (error) {
-    console.log(error);
+    ////(error);
     error_res(res, {
       status_code: error.status,
       message: "failed to send opt",
     });
   }
 };
-
+//checking otp create token
 const reset_password_otp_token = async (req, res) => {
   try {
     const isSecure = req.secure;
     const user = req.user.toObject();
 
- 
-    
     if (req.isValidOTP) {
-      console.log("shamim");
+      ////("shamim");
       const token = await tokenCreate(user, "ssaa", "5m");
 
       cookieGenerate(res, {
@@ -311,7 +309,7 @@ const reset_password_otp_token = async (req, res) => {
     });
   }
 };
-
+//nothing
 const reset_password_token = async (req, res) => {
   try {
     if (!req.isValidOTP) {
@@ -355,7 +353,7 @@ const reset_password_token = async (req, res) => {
     error_res(res, { message: error.message, status_code: error.status });
   }
 };
-
+//nothing
 const user_updating = async (req, res) => {
   const { password, ...UserDAta } = req.user.toObject();
   const { email, UserName, name } = req.body;
@@ -373,6 +371,10 @@ const user_updating = async (req, res) => {
     });
   }
 };
+
+const token_checkFor_resetPass = async (req, res) => {
+  "";
+};
 module.exports = {
   register_controller,
   login_controller,
@@ -385,4 +387,5 @@ module.exports = {
   reset_password_otp_token,
   user_updating,
   LogoutAT,
+  token_checkFor_resetPass,
 };

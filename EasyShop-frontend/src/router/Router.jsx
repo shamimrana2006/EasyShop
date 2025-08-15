@@ -13,6 +13,7 @@ import ProfileLayout from "../Layout/ProfileLayout";
 import ForgotPassword from "../pages/authPage/ForgotPassword";
 import { ToastContainer } from "react-toastify";
 import ForgotPasswordOTP from "../pages/authPage/forgotPasswordOTP";
+import NewPass from "../pages/authPage/NewPass";
 
 const Router_Custom = () => {
   const location = useLocation();
@@ -41,6 +42,7 @@ const Router_Custom = () => {
               <Route path="login" element={<Login />} />
               <Route path="forgot_password" element={<ForgotPassword />} />
               <Route path="forgot_OTP" element={<ForgotPasswordOTP />} />
+              <Route path="resetPass" element={<NewPass />} />
             </Route>
             <Route
               path="/private"

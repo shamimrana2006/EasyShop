@@ -19,7 +19,7 @@ const ForgotPassword = () => {
     return state.userStore;
   });
 
-  console.log(localStorage.getItem("ResetPassEmail"));
+  ////(localStorage.getItem("ResetPassEmail"));
 
   if (user.loading) {
     return <Loading></Loading>;

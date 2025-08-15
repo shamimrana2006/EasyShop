@@ -92,7 +92,7 @@ const OTP_Service = async (email, reason) => {
     await SendMail(email, reason, body);
     return `otp send successfully for ${reason}`;
   } catch (error) {
-    console.log(error);
+    ////(error);
     return `otp send failed for ${error.message}`;
   }
 };

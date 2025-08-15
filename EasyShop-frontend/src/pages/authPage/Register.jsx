@@ -20,7 +20,7 @@ const Register = () => {
     if (user.user && !user.loading) {
       navigate("/");
     } else {
-      console.log("user not found");
+      ////("user not found");
       dispatch(resetstate());
     }
   }, [user.user]);
@@ -37,11 +37,11 @@ const Register = () => {
       //   return navigate("/");
       // }
     } catch (error) {
-      console.log(error);
+      ////(error);
     }
   };
 
-  console.log(user);
+  ////(user);
   if (user.loading) {
     return <Loading></Loading>;
   }
@@ -72,12 +72,12 @@ const Register = () => {
                 <FaEye className={showPassword ? "hidden" : "block"} onClick={() => setShowPassword(true)} />
                 <FaLock className={showPassword ? "block" : "hidden"} onClick={() => setShowPassword(false)} />
               </div>
-              <span className="text-primary">{user?.error ? (user?.error?.payload?.message ? "" : user?.error?.payload == "user not found" ? "" : user?.error?.payload) : ""}</span>
+              <span className="text-danger">{user?.error ? (user?.error?.payload?.message ? "" : user?.error?.payload == "user not found" ? "" : user?.error?.payload) : ""}</span>
               <button className="btn btn-sm mb-4 ">Register</button>
             </form>
             <span className="">
               Already account{" "}
-              <Link className={"text-primary"} to={"/auth/login"}>
+              <Link className={"text-primary hover:underline"} to={"/auth/login"}>
                 Login
               </Link>
             </span>

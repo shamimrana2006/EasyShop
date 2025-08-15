@@ -8,11 +8,11 @@ const corseSEtup = {
       return callback(null, true);
     }
 
-    console.log(origins, origin);
+    ////(origins, origin);
     if (origins.includes(origin)) {
       return callback(null, true);
     } else {
-      console.log(origins, origin);
+      ////(origins, origin);
       callback(new Error("origin not accepted by cors"));
     }
   },

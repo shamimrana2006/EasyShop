@@ -8,7 +8,7 @@ export default function AppWrapper({ children }) {
   const user = useSelector((state) => state.userStore);
   useEffect(() => {
     console.count("appwrapper");
-    console.log("appwapper");
+    ////("appwapper");
 
     dispatch(userFetch({ url: "/join/profile" }));
   }, [dispatch, Cookies.get("token")]);
@@ -17,7 +17,7 @@ export default function AppWrapper({ children }) {
     localStorage.setItem("theme", user?.theme ? "true" : "false");
   }, [user]);
 
-  console.log(user);
+  ////(user);
 
   return children;
 }

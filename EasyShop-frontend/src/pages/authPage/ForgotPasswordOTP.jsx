@@ -1,5 +1,5 @@
 import "./login.css";
-import { motion } from "framer-motion";
+import { color, motion } from "framer-motion";
 import Lottie from "lottie-react";
 import loginLottie from "./Lottie/Login.json";
 import { FaEye, FaLock, FaUser } from "react-icons/fa";
@@ -15,12 +15,15 @@ const ForgotPasswordOTP = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-  const [Email, setEmail] = useState("");
+
   const OTPREf = useRef("otp");
   const user = useSelector((state) => {
     return state.userStore;
   });
 
+  console.log(user);
+
+  const email = localStorage.getItem("ResetPassEmail");
   useEffect(() => {
     if (user.user && !user.loading) {
       navigate("/");
@@ -29,34 +32,43 @@ const ForgotPasswordOTP = () => {
     }
   }, [user.user]);
 
-  const CheckOTP = async (e) => {
-    e.preventDefault();
-    const email = localStorage.getItem("ResetPassEmail");
+  const resentOTP = async () => {
+    console.log(email);
 
-    const otp = OTPREf.current.value;
-
-    dispatch(resetOTPTOKenCreate({ email, otp })).then((res) => {
-      if (resetOTPTOKenCreate.fulfilled.match(res)) {
-        console.log("shamim kaj korche opt valid ache");
+    const result = dispatch(resetPassOTP({ email })).then((res) => {
+      if (resetPassOTP.fulfilled.match(res)) {
+        return res;
       } else {
-        console.log("kaj korche na otp");
+        return Promise.reject(res);
       }
     });
 
-    // const result = dispatch(resetPassOTP({ email: Email })).then((res) => {
-    //   if (resetPassOTP.fulfilled.match(res)) {
-    //     navigate("/auth/forgot_OTP");
-    //     return res;
-    //   } else {
-    //     return Promise.reject(res);
-    //   }
-    // });
+    toast.promise(result, {
+      pending: "otp resending...",
+      success: "OTP send successfully ",
+      error: "not sending",
+    });
+  };
 
-    // toast.promise(result, {
-    //   pending: "OTP sending...",
-    //   success: "reset otp send successfully",
-    //   error: user?.error?.message || "something went wrong",
-    // });
+  const CheckOTP = async (e) => {
+    e.preventDefault();
+
+    const otp = OTPREf.current.value;
+    const result = dispatch(resetOTPTOKenCreate({ email, otp })).then((res) => {
+      if (resetOTPTOKenCreate.fulfilled.match(res)) {
+        ////("shamim kaj korche opt valid ache");
+        navigate("/auth/resetPass");
+        return res;
+      } else {
+        ////("kaj korche na otp");
+        return Promise.reject(res);
+      }
+    });
+    toast.promise(result, {
+      pending: "otp checking...",
+      success: "You can change your password ",
+      error: "not valid user/otp",
+    });
   };
 
   if (user.loading) {
@@ -77,21 +89,21 @@ const ForgotPasswordOTP = () => {
             <form onSubmit={CheckOTP}>
               <div className="flex flex-col gap-2 mt-2">
                 <div className="flex justify-between items-center gap-2 border-b pl-3 p-2 rounded-[15px] border-gray-300">
-                  <input ref={OTPREf} onChange={(e) => setEmail(e.target.value)} type="number" required className="outline-none " autoFocus placeholder="OTP" />
+                  <input ref={OTPREf} onChange={(e) => setEmail(e.target.value)} type="number" required className="outline-none " autoFocus placeholder="OTP only 6 digit" />
                   <FaUser />
                 </div>
 
                 <span className="">
-                  <Link className={"text-primary hover:underline"} to={"/auth/login"}>
-                    Login with Password
-                  </Link>
+                  <span onClick={resentOTP} className={"text-primary hover:underline"}>
+                    Resend OTP
+                  </span>
                 </span>
                 <span className="text-primary">{user?.error ? (user?.error?.payload?.message ? "" : user?.error?.payload) : ""}</span>
                 <button className="btn btn-sm mt-4">Send OTP</button>
                 <span className=" mt-4">
-                  New to EasyShop{" "}
-                  <Link className={"text-primary"} to={"/auth/register"}>
-                    Register
+                  Login with Password{" "}
+                  <Link className={"text-primary"} to={"/auth/login"}>
+                    Password
                   </Link>
                 </span>
               </div>

@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Capital FM — Simple Web Player (HTML/CSS/JS)</title>
+<!-- HLS support -->
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<style>
+  :root { --bg:#0f172a; --card:#111827; --text:#e5e7eb; --muted:#9ca3af; --accent:#22d3ee; }
+  *{box-sizing:border-box}
+  body{margin:0;background:linear-gradient(180deg,#0b1220,#0f172a 30%,#0b1220);color:var(--text);font:16px/1.4 system-ui,Segoe UI,Roboto,Arial}
+  .wrap{max-width:680px;margin:48px auto;padding:0 16px}
+  .card{background:rgba(17,24,39,.75);backdrop-filter: blur(8px); border:1px solid rgba(255,255,255,.06);
+        border-radius:20px;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+  h1{margin:0 0 8px;font-size:24px}
+  p{margin:0 0 16px;color:var(--muted)}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .input{flex:1;min-width:240px;background:#0b1020;border:1px solid rgba(255,255,255,.08);color:var(--text);
+         padding:12px 14px;border-radius:12px;outline:none}
+  .btn{appearance:none;border:0;border-radius:12px;padding:12px 16px;cursor:pointer;color:#031320;background:var(--accent);
+       font-weight:600;transition:.2s transform,.2s opacity}
+  .btn:active{transform:scale(.98)}
+  .btn.secondary{background:#1f2937;color:var(--text);border:1px solid rgba(255,255,255,.08)}
+  .controls{display:flex;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap}
+  .pill{display:inline-flex;align-items:center;gap:8px;background:#0b1020;border:1px solid rgba(255,255,255,.08);
+        border-radius:999px;padding:8px 12px}
+  .range{accent-color:var(--accent)}
+  .meter{height:6px;background:#0b1020;border-radius:999px;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+  .bar{height:100%;width:0;background:linear-gradient(90deg,#22d3ee,#60a5fa)}
+  .status{font-size:13px;color:var(--muted);margin-top:8px;min-height:18px}
+  .badgelite{display:inline-flex;align-items:center;gap:6px;background:#052d33;border:1px solid #0b6b77;color:#5eead4;
+             padding:6px 10px;border-radius:999px;font-size:12px;margin-top:8px}
+  .small{font-size:12px;color:var(--muted)}
+  .grid{display:grid;grid-template-columns:1fr auto;gap:10px}
+  .hidden{display:none}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Capital FM — Online Radio Player</h1>
+      <p>সরাসরি প্লে না হলে নিচের ফিল্ডে আপনার <b>proxy করা</b> স্ট্রিম URL দিন (HLS/MP3)।</p>
+
+      <div class="grid">
+        <input id="url" class="input" placeholder="Stream URL (e.g. https://your-proxy.example.com/capital.m3u8)" />
+        <button id="load" class="btn">Load</button>
+      </div>
+
+      <div class="controls">
+        <button id="play" class="btn">▶ Play</button>
+        <button id="pause" class="btn secondary">⏸ Pause</button>
+        <button id="stop" class="btn secondary">⏹ Stop</button>
+
+        <div class="pill">
+          🔊
+          <input id="volume" type="range" class="range" min="0" max="1" step="0.01" value="0.9" />
+        </div>
+        <button id="mute" class="btn secondary">Mute</button>
+      </div>
+
+      <div style="margin:14px 0">
+        <div class="meter"><div id="progress" class="bar"></div></div>
+        <div id="status" class="status">Ready.</div>
+        <div id="tip" class="badgelite hidden">Hint: Capital FM অফিসিয়াল স্ট্রিমে টোকেন/জিও-লক থাকতে পারে—নিজস্ব CORS proxy ব্যবহার করুন।</div>
+      </div>
+
+      <audio id="player" preload="none" crossorigin="anonymous"></audio>
+
+      <details style="margin-top:10px">
+        <summary class="small">কীভাবে Proxy করবেন?</summary>
+        <div class="small" style="margin-top:8px">
+          Node/Express দিয়ে একটি সরল proxy বানিয়ে নিন এবং <i>?url=</i> কুয়েরি দিয়ে Capital FM স্ট্রিম টানুন।
+          <br/>উদা.: <code>https://your-proxy.example.com/proxy?url=ACTUAL_STREAM_URL</code>
+        </div>
+      </details>
+    </div>
+  </div>
+
+<script>
+/*
+  ⚠️ গুরুত্বপূর্ণ:
+  1) CAPITAL_FM_STREAM_DIRECT – সরাসরি দিলে কাজ নাও করতে পারে (DRM/Token/CORS/Geo).
+  2) CAPITAL_FM_STREAM_PROXY – নিজের proxy দিয়ে ফরোয়ার্ড করুন।
+  ⬇ নিচের ভ্যারিয়েবলটায় আপনার কার্যকর (proxy করা) URL বসান।
+*/
+const CAPITAL_FM_STREAM_PROXY = ""; // e.g. "https://your-proxy.example.com/capital.m3u8"
+const FALLBACK_HINT_DELAY = 2500;
+
+const audio = document.getElementById('player');
+const urlInput = document.getElementById('url');
+const loadBtn = document.getElementById('load');
+const playBtn = document.getElementById('play');
+const pauseBtn = document.getElementById('pause');
+const stopBtn = document.getElementById('stop');
+const vol = document.getElementById('volume');
+const muteBtn = document.getElementById('mute');
+const progress = document.getElementById('progress');
+const statusEl = document.getElementById('status');
+const tipEl = document.getElementById('tip');
+
+let hls = null;
+let lastKnownUrl = "";
+
+// Prefill input if we have a preset
+if (CAPITAL_FM_STREAM_PROXY) {
+  urlInput.value = CAPITAL_FM_STREAM_PROXY;
+}
+
+function setStatus(t){ statusEl.textContent = t; }
+function showTip(){ tipEl.classList.remove('hidden'); }
+function hideTip(){ tipEl.classList.add('hidden'); }
+
+function destroyHls(){
+  if (hls){ try { hls.destroy(); } catch(e){} hls = null; }
+}
+
+function load(url){
+  destroyHls();
+  lastKnownUrl = url;
+  hideTip();
+  setStatus('Loading stream…');
+
+  if (!url) {
+    setStatus('No URL provided.');
+    showTip();
+    return;
+  }
+
+  // HLS?
+  const looksHls = url.includes('.m3u8') || url.includes('m3u8?') || url.includes('format=hls');
+
+  try {
+    if (looksHls && window.Hls && Hls.isSupported()) {
+      hls = new Hls({ enableWorker: true, maxBufferLength: 30 });
+      hls.loadSource(url);
+      hls.attachMedia(audio);
+      hls.on(Hls.Events.MANIFEST_PARSED, () => setStatus('Manifest parsed. Click Play.'));
+      hls.on(Hls.Events.ERROR, (evt, data) => {
+        console.warn('HLS error', data);
+        setStatus('HLS error: ' + (data?.details || data?.type || 'unknown'));
+        if (data?.fatal) showTip();
+      });
+    } else if (audio.canPlayType('application/vnd.apple.mpegURL')) {
+      // Safari native HLS
+      audio.src = url;
+      setStatus('HLS (native). Click Play.');
+    } else {
+      // Assume direct MP3/AAC
+      audio.src = url;
+      setStatus('URL set. Click Play.');
+    }
+  } catch (e) {
+    console.error(e);
+    setStatus('Load failed: ' + e.message);
+    showTip();
+  }
+
+  // In case of silent CORS/geo fail, hint after a moment
+  setTimeout(() => {
+    if (audio.readyState === 0 && audio.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) {
+      showTip();
+    }
+  }, FALLBACK_HINT_DELAY);
+}
+
+function play(){
+  audio.play().then(() => {
+    setStatus('Playing…');
+  }).catch(err => {
+    setStatus('Autoplay blocked. Click Play. (' + err.message + ')');
+  });
+}
+function pause(){ audio.pause(); setStatus('Paused.'); }
+function stop(){ audio.pause(); audio.currentTime = 0; setStatus('Stopped.'); }
+
+loadBtn.addEventListener('click', () => load(urlInput.value.trim()));
+playBtn.addEventListener('click', play);
+pauseBtn.addEventListener('click', pause);
+stopBtn.addEventListener('click', stop);
+
+vol.addEventListener('input', () => { audio.volume = +vol.value; });
+muteBtn.addEventListener('click', () => {
+  audio.muted = !audio.muted;
+  muteBtn.textContent = audio.muted ? 'Unmute' : 'Mute';
+});
+
+// Progress (for live it’s limited, but shows buffer/playhead)
+audio.addEventListener('timeupdate', () => {
+  const dur = isFinite(audio.duration) ? audio.duration : 60; // live: fake 60s window
+  const pct = Math.min(100, (audio.currentTime / dur) * 100);
+  progress.style.width = pct + '%';
+});
+
+audio.addEventListener('waiting', () => setStatus('Buffering…'));
+audio.addEventListener('playing', () => setStatus('Playing…'));
+audio.addEventListener('pause', () => setStatus('Paused.'));
+audio.addEventListener('error', () => {
+  const e = audio.error;
+  setStatus('Audio error ' + (e?.code || '') + '. May require proxy/geo access.');
+  showTip();
+});
+
+// Auto-load preset if provided
+if (CAPITAL_FM_STREAM_PROXY) {
+  load(CAPITAL_FM_STREAM_PROXY);
+}
+</script>
+</body>
+</html>

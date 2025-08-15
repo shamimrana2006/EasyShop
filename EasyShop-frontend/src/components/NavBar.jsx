@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
 import { IoBagHandleOutline } from "react-icons/io5";
 import { CiHeart, CiMenuKebab, CiSettings, CiSun, CiUser } from "react-icons/ci";
-import { FaBackward, FaCalendarMinus, FaFacebook, FaInstagram, FaLinkedin, FaMoon, FaSearch, FaTwitter } from "react-icons/fa";
+import { FaBackward, FaCalendarMinus, FaFacebook, FaInstagram, FaLinkedin, FaMoon, FaSearch, FaSun, FaTwitter } from "react-icons/fa";
 import { Link, NavLink, useLocation } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
 import Loading from "../Layout/Loading";
-import { resetstate, ThemeToggle, userFetch, userLogout } from "../features/UserSlice";
+import { ThemeToggle, userLogout } from "../features/UserSlice";
 import { Navigate } from "react-router";
 const NavBar = () => {
   const userState = useSelector((state) => state.userStore);
@@ -20,8 +19,8 @@ const NavBar = () => {
       document.documentElement.classList.add("dark");
     }
   }, [userState]);
+  const theme = JSON.parse(localStorage.getItem("theme"));
   const themeToggle = async () => {
-    const theme = JSON.parse(localStorage.getItem("theme"));
 
     const newTheme = !theme;
     localStorage.setItem("theme", newTheme);
@@ -44,7 +43,7 @@ const NavBar = () => {
       document.querySelector(".MenuVisible").classList.add("hidden");
     }
   });
-  console.log(location.pathname.includes("/user/profile"));
+  ////(location.pathname.includes("/user/profile"));
 
   if (userState.loading) return <Loading />;
   const logoutCall = () => {
@@ -59,6 +58,7 @@ const NavBar = () => {
         {" "}
         man
       </NavLink>
+
       <NavLink to={"/women"}>Women's</NavLink>
       <NavLink to={"/jewelry"}>Jewelry</NavLink>
       <NavLink to={"/Perfume"}>Perfume</NavLink>
@@ -72,14 +72,14 @@ const NavBar = () => {
       <div className="bg-bg text-text border-border">
         {/* topbar */}
         <div className={`bg-bg containerr hidden justify-between items-center py-2 ${ifProfileSoHidden} focus:text-ptext `}>
-          <div className="socialIcons flex gap-1">
+          <div className="socialIcons flex text-gray-500 gap-1">
             <FaFacebook className=" p-[6px] flex items-center justify-center text-4xl bg-pbox rounded-[7px] " />
             <FaTwitter className=" p-[6px] flex items-center justify-center text-4xl bg-pbox rounded-[7px] " />
             <FaInstagram className=" p-[6px] flex items-center justify-center text-4xl bg-pbox rounded-[7px] " />
             <FaLinkedin className=" p-[6px] flex items-center justify-center text-4xl bg-pbox rounded-[7px] " />
           </div>
           <span className="noticeTitle text-ptext uppercase font-bold">Free shipping this week order over - $55</span>
-          <div className="flex gap-1 items-center justify-end">
+          <div className="flex gap-1 items-center  text-ptext justify-end">
             <select name="option" className="rounded transition-all bg-pbox duration-300 ease-in-out flex items-center text-center p-2 outline-none focus:outline-none focus:rounded focus:bg-ptext focus:border-none" id="option">
               <option value="usd">USD $</option>
               <option className="" value="TK">
@@ -99,7 +99,7 @@ const NavBar = () => {
         <div className="containerr relative py-3 flex justify-between items-center">
           <div className="fnd">
             <NavLink to={"/"}>
-              <h1 className="font-bold md:text-4xl text-primary fontLogo">E-Shop</h1>
+              <h1 className="font-bold md:text-4xl text-lg text-text fontLogo">Shop</h1>
             </NavLink>
           </div>
           {location.pathname.includes("/user/profile") ? (
@@ -128,20 +128,21 @@ const NavBar = () => {
                   ) : (
                     <></>
                   )}
-                  <button onClick={themeToggle} className=" bg-ptext text-[12px] text-center justify-between items-center flex p-[5px] rounded text-text">
-                    {!userState?.user?.payLoad?.isDarkMode ? (
-                      <>
-                        Light Mode
-                        <CiSun className="text-[20px]" />
-                      </>
-                    ) : (
-                      <>
-                        Dark Mode
-                        <FaMoon className="text-[12px]" />
-                      </>
-                    )}
+                  <button onClick={themeToggle} className=" ">
+                    <div
+                      onClick={() => {
+                        setIsDark(theme);
+                      }}
+                      style={{
+                        boxShadow: "inset 0 0 10px rgba(0,0,0,0.5)",
+                      }}
+                      className={`p-2 flex transition-all duration-1000 justify-center items-center gap-3 ${!theme ? "bg-black" : "bg-white"}  rounded-full  relative overflow-hidden`}>
+                      <FaMoon className={`${theme ? "text-black" : "text-white"}`} />
+                      <FaSun className={`${theme ? "text-black" : "text-white"}`} />
+                      <div className={`w-7 h-7 ${theme ? "bg-black left-[2px]" : "bg-white left-[30px]"}  rounded-full absolute transition-all duration-1000 ease-in-out`}></div>
+                    </div>
                   </button>
-                  <span onClick={logoutCall} className="  bg-red-600 text-[12px] p-[5px] rounded text-white  cursor-pointer ">
+                  <span onClick={logoutCall} className="  bg-danger text-[12px] p-[5px] rounded text-white  cursor-pointer ">
                     Log Out
                   </span>
                 </div>
@@ -161,12 +162,12 @@ const NavBar = () => {
               ) : (
                 <>
                   <div className="relative">
-                    <span className="absolute w-4 h-4 right-0 -top-1 text-[0.8rem] flex items-center justify-center text-white rounded-full bg-primary">5</span>
+                    <span className="absolute w-4 h-4 right-0 -top-1 text-[0.8rem] flex items-center justify-center text-white rounded-full bg-danger">5</span>
 
                     <CiHeart />
                   </div>
                   <div className="relative">
-                    <span className="absolute w-4 h-4 right-0 -top-1 text-[0.8rem] flex items-center justify-center text-white rounded-full bg-primary">50</span>
+                    <span className="absolute w-4 h-4 right-0 -top-1 text-[0.8rem] flex items-center justify-center text-white rounded-full bg-danger">50</span>
                     <IoBagHandleOutline />
                   </div>
                   <button onClick={() => document.querySelector(".MenuVisible").classList.toggle("hidden")} className="md:hidden block">
@@ -186,7 +187,7 @@ const NavBar = () => {
              
             )} */}
             <div className="absolute containerr hidden border MenuVisible top-12 text-sm bg-bg p-2 border-border rounded-[8px] ">
-              <ul className="flex menuListLargeDevice md:text-sm flex-col  justify-center gap-2  font-bold uppercase">{menuList}</ul>
+              <ul className="flex menuListLargeDevice md:text-sm flex-col   justify-center gap-2  font-bold uppercase">{menuList}</ul>
             </div>
           </div>
         </div>
@@ -195,11 +196,10 @@ const NavBar = () => {
 
         {/* last navbar menu */}
         <div className={`  hidden containerr justify-center bg-bg text-text gap-2 py-3  items-center ${ifProfileSoHidden} `}>
-          <ul className="flex z-50 menuListLargeDevice justify-center items-center lg:gap-18 md:gap-5 font-bold uppercase">{menuList}</ul>
+          <ul className="flex z-50 menuListLargeDevice justify-center items-center lg:gap-18 md:gap-5 font-bold text-gray-500 uppercase">{menuList}</ul>
         </div>
         {ifProfileSoHidden ? <div className="border-b border-border"></div> : ""}
       </div>
-     
     </div>
   );
 };
