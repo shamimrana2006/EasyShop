@@ -10,6 +10,7 @@ import { AnimatePresence } from "framer-motion";
 import { PageTransitionFade } from "../components/PageTnsition";
 import PrivetRout from "../pages/privetPage/Private";
 import ProfileLayout from "../Layout/ProfileLayout";
+import ForgotPassword from "../pages/authPage/ForgotPassword";
 
 const Router_Custom = () => {
   const location = useLocation();
@@ -37,6 +38,7 @@ const Router_Custom = () => {
           <Route path="/auth" element={<Auth />}>
             <Route path="Register" element={<Register />} />
             <Route path="login" element={<Login />} />
+            <Route path="forgot_password" element={<ForgotPassword />} />
           </Route>
           <Route
             path="/private"

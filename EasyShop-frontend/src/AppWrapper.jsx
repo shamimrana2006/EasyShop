@@ -14,11 +14,7 @@ export default function AppWrapper({ children }) {
   }, [dispatch, Cookies.get("token")]);
 
   useEffect(() => {
-    if (user?.user?.payLoad?.isDarkMode) {
-      document.documentElement.classList.remove("dark");
-    } else {
-      document.documentElement.classList.add("dark");
-    }
+    localStorage.setItem("theme", user?.theme ? "true" : "false");
   }, [user]);
 
   console.log(user);

@@ -28,6 +28,22 @@ export const userLogout = createAsyncThunk("user/logOout", async (_, { rejectWit
     return rejectWithValue(error);
   }
 });
+export const ThemeToggle = createAsyncThunk("user/theme-toggle", async (_, { rejectWithValue }) => {
+  try {
+    const res = await axiosUserInstance.get("/join/theme-toggle");
+    return res.data;
+  } catch (error) {
+    return rejectWithValue(error);
+  }
+});
+export const resetPassOTP = createAsyncThunk("user/resetPassOTP", async ({ email }, { rejectWithValue }) => {
+  try {
+    const res = await axiosUserInstance.post("/join/reset-pass-otp", { email });
+    return res.data;
+  } catch (error) {
+    return rejectWithValue(error);
+  }
+});
 
 const UserSlice = createSlice({
   name: "user",
@@ -35,6 +51,7 @@ const UserSlice = createSlice({
     user: null,
     loading: true,
     error: null,
+    message: "",
   },
   reducers: {
     userObserve: (state, action) => {
@@ -56,11 +73,11 @@ const UserSlice = createSlice({
         // console.log(action);
 
         state.user = action.payload;
+        state.theme = action.payload.payLoad.isDarkMode
         console.log(action);
       })
       .addCase(userFetch.rejected, (state, action) => {
         state.loading = false;
-
         state.error = action;
       })
       .addCase(userLogout.pending, (state) => {
@@ -73,6 +90,32 @@ const UserSlice = createSlice({
       .addCase(userLogout.rejected, (state, action) => {
         state.loading = false;
 
+        state.error = action;
+      })
+      .addCase(resetPassOTP.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(resetPassOTP.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = null;
+        state.error = null;
+        state.message = action;
+      })
+      .addCase(resetPassOTP.rejected, (state, action) => {
+        state.loading = false;
+        state.message = "";
+        state.error = action?.payload?.response?.data;
+      })
+      .addCase(ThemeToggle.pending, (state) => {
+        state.loading = false;
+      })
+      .addCase(ThemeToggle.fulfilled, (state, action) => {
+        state.loading = false;
+        state.theme = action?.payload?.payLoad?.isDarkMode;
+      })
+      .addCase(ThemeToggle.rejected, (state, action) => {
+        state.loading = false;
+        state.message = "";
         state.error = action;
       });
   },

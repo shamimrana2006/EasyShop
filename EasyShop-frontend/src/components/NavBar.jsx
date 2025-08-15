@@ -6,27 +6,27 @@ import { Link, NavLink, useLocation } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 
 import Loading from "../Layout/Loading";
-import { resetstate, userFetch, userLogout } from "../features/UserSlice";
+import { resetstate, ThemeToggle, userFetch, userLogout } from "../features/UserSlice";
 import { Navigate } from "react-router";
 const NavBar = () => {
   const userState = useSelector((state) => state.userStore);
   const location = useLocation();
   const dispatch = useDispatch();
-  console.log(userState?.user?.payLoad?.isAdmin);
-
-  // useEffect(() => {
-  //   document.querySelector(".MenuVisible").classList.add("hidden");
-  // }, [path]);
 
   useEffect(() => {
-    if (userState?.user?.payLoad?.isDarkMode) {
+    if (!userState?.theme) {
       document.documentElement.classList.remove("dark");
     } else {
       document.documentElement.classList.add("dark");
     }
   }, [userState]);
   const themeToggle = async () => {
-    await dispatch(userFetch({ url: "/join/theme-toggle", method: "get" }));
+    const theme = JSON.parse(localStorage.getItem("theme"));
+
+    const newTheme = !theme;
+    localStorage.setItem("theme", newTheme);
+    newTheme ? document.documentElement.classList.add("dark") : document.documentElement.classList.remove("dark");
+    await dispatch(ThemeToggle({ url: "/join/theme-toggle", method: "get" }));
   };
 
   const searchButton = () => {
@@ -49,7 +49,6 @@ const NavBar = () => {
   if (userState.loading) return <Loading />;
   const logoutCall = () => {
     <Navigate to={"/"} />;
-    // dispatch(userFetch({ url: "/join/logout" }))
     dispatch(userLogout());
   };
   const menuList = (

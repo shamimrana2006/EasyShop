@@ -250,6 +250,8 @@ const CheckAdmin = async (req, res, next) => {
 const reset_password_otp = async (req, res) => {
   try {
     const email = req.body?.email;
+    console.log(req.body);
+    
     if (!email) {
       return error_res(res, { status_code: 404, message: "email required" });
     }

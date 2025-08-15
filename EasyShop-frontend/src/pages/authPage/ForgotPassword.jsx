@@ -8,12 +8,12 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Loading from "../../Layout/Loading";
-import { resetstate, userFetch } from "../../features/UserSlice";
+import { resetPassOTP, resetstate, userFetch } from "../../features/UserSlice";
 
-const Login = () => {
+const ForgotPassword = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [userName, setUserName] = useState("");
+  const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
   const [error, seterror] = useState("");
   const user = useSelector((state) => {
@@ -33,16 +33,14 @@ const Login = () => {
     return <Loading></Loading>;
   }
 
-  const HandleLogin = async (e) => {
+  const HandleSendOTP = async (e) => {
     e.preventDefault();
-    if (!userName && !Password) return;
-    dispath(
-      userFetch({
-        method: "post",
-        url: "/join/login",
-        payload: { UserName: userName, password: Password },
-      }),
-    );
+    if (!Email) return;
+    const result = await dispath(resetPassOTP({ email: Email }));
+    if(resetPassOTP.fulfilled.match(result)){
+       console.log("successsssssssssssssssssssssssssssss");
+       
+    }
   };
 
   return (
@@ -55,26 +53,21 @@ const Login = () => {
         {/* lottie box start--------------- */}
         <div className="loginBox flex-col-reverse !text-white flex  md:flex-row  gap-5 justify-center items-center backdrop-blur-[10px] border-t-[1px] border-l md:px-20  shadow-2xl drop-shadow-2xl border-[#ffffff3f] p-10 rounded">
           <div>
-            <h1 className="text-lg hidden md:block uppercase  text-center pb-4">login</h1>
-            <form onSubmit={HandleLogin}>
+            <h1 className="text-lg hidden md:block uppercase  text-center pb-4">reset password</h1>
+            <form onSubmit={HandleSendOTP}>
               <div className="flex flex-col gap-2 mt-2">
                 <div className="flex justify-between items-center gap-2 border-b pl-3 p-2 rounded-[15px] border-gray-300">
-                  <input onChange={(e) => setUserName(e.target.value)} type="text" className="outline-none " autoFocus placeholder="Username" />
+                  <input onChange={(e) => setEmail(e.target.value)} type="email" required className="outline-none " autoFocus placeholder="Email/phone" />
                   <FaUser />
                 </div>
-                <div className="flex justify-between items-center gap-2 border-b pl-3 p-2 rounded-[15px] border-gray-300">
-                  <input onChange={(e) => setPassword(e.target.value)} type={showPassword ? "text" : "password"} className="outline-none " placeholder="password" />
-                  <FaEye className={showPassword ? "hidden" : "block"} onClick={() => setShowPassword(true)} />
-                  <FaLock className={showPassword ? "block" : "hidden"} onClick={() => setShowPassword(false)} />
-                </div>
+
                 <span className="">
-                  
-                  <Link className={"text-primary hover:underline"} to={"/auth/forgot_password"}>
-                    Forgot Password
+                  <Link className={"text-primary hover:underline"} to={"/auth/login"}>
+                    Login with Password
                   </Link>
                 </span>
                 <span className="text-primary">{user?.error ? (user?.error?.payload?.message ? "" : user?.error?.payload) : ""}</span>
-                <button className="btn btn-sm mt-4">Login</button>
+                <button className="btn btn-sm mt-4">Send OTP</button>
                 <span className=" mt-4">
                   New to EasyShop{" "}
                   <Link className={"text-primary"} to={"/auth/register"}>
@@ -97,4 +90,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ForgotPassword;
