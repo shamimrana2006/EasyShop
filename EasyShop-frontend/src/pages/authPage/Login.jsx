@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Loading from "../../Layout/Loading";
 import { resetstate, userFetch } from "../../features/UserSlice";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -36,13 +37,25 @@ const Login = () => {
   const HandleLogin = async (e) => {
     e.preventDefault();
     if (!userName && !Password) return;
-    dispath(
+    const result = dispath(
       userFetch({
         method: "post",
         url: "/join/login",
         payload: { UserName: userName, password: Password },
       }),
-    );
+    ).then((res) => {
+      if (userFetch.fulfilled.match(res)) {
+        return res; // success হলে resolve
+      }
+      return Promise.reject(res); // ব্যর্থ হলে reject
+    });
+
+    toast.promise(result, {
+      pending: "login in...",
+      success: "login successfully",
+      error: user?.error ? (user?.error?.payload?.message ? "" : user?.error?.payload) : "",
+    });
+    // userFetch.fulfilled.match(result) ? toast("shamim working") : alert("not working shamim");
   };
 
   return (
@@ -68,7 +81,6 @@ const Login = () => {
                   <FaLock className={showPassword ? "block" : "hidden"} onClick={() => setShowPassword(false)} />
                 </div>
                 <span className="">
-                  
                   <Link className={"text-primary hover:underline"} to={"/auth/forgot_password"}>
                     Forgot Password
                   </Link>

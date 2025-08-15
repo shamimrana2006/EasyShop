@@ -4,7 +4,7 @@ import { CiHeart, CiMenuKebab, CiSettings, CiSun, CiUser } from "react-icons/ci"
 import { FaBackward, FaCalendarMinus, FaFacebook, FaInstagram, FaLinkedin, FaMoon, FaSearch, FaTwitter } from "react-icons/fa";
 import { Link, NavLink, useLocation } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-
+import { ToastContainer, toast } from "react-toastify";
 import Loading from "../Layout/Loading";
 import { resetstate, ThemeToggle, userFetch, userLogout } from "../features/UserSlice";
 import { Navigate } from "react-router";
@@ -199,6 +199,7 @@ const NavBar = () => {
         </div>
         {ifProfileSoHidden ? <div className="border-b border-border"></div> : ""}
       </div>
+     
     </div>
   );
 };

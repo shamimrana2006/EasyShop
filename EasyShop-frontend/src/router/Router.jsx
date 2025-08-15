@@ -11,46 +11,48 @@ import { PageTransitionFade } from "../components/PageTnsition";
 import PrivetRout from "../pages/privetPage/Private";
 import ProfileLayout from "../Layout/ProfileLayout";
 import ForgotPassword from "../pages/authPage/ForgotPassword";
+import { ToastContainer } from "react-toastify";
 
 const Router_Custom = () => {
   const location = useLocation();
   return (
-    <AnimatePresence mode="wait">
-      <PageTransitionFade key={location.pathname}>
-        <Routes location={location}>
-          <Route path="/" element={<Layout />}>
-            <Route path="user" element={<User />}>
-              <Route
-                path="profile"
-                element={
-                  <PrivetRout>
-                    <ProfileLayout>
-                    </ProfileLayout>
-                  </PrivetRout>
-                }
-              >
-                <Route index element={<Profile/>}></Route>
-                <Route path="security" element="shamim"></Route>
-                <Route path="*" element={<NotFound></NotFound>}></Route>
+    <>
+      <AnimatePresence mode="wait">
+        <PageTransitionFade key={location.pathname}>
+          <Routes location={location}>
+            <Route path="/" element={<Layout />}>
+              <Route path="user" element={<User />}>
+                <Route
+                  path="profile"
+                  element={
+                    <PrivetRout>
+                      <ProfileLayout></ProfileLayout>
+                    </PrivetRout>
+                  }>
+                  <Route index element={<Profile />}></Route>
+                  <Route path="security" element="shamim"></Route>
+                  <Route path="*" element={<NotFound></NotFound>}></Route>
+                </Route>
               </Route>
             </Route>
-          </Route>
-          <Route path="/auth" element={<Auth />}>
-            <Route path="Register" element={<Register />} />
-            <Route path="login" element={<Login />} />
-            <Route path="forgot_password" element={<ForgotPassword />} />
-          </Route>
-          <Route
-            path="/private"
-            element={
-              <PrivetRout>
-                <h1>Shamim</h1>
-              </PrivetRout>
-            }></Route>
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </PageTransitionFade>
-    </AnimatePresence>
+            <Route path="/auth" element={<Auth />}>
+              <Route path="Register" element={<Register />} />
+              <Route path="login" element={<Login />} />
+              <Route path="forgot_password" element={<ForgotPassword />} />
+            </Route>
+            <Route
+              path="/private"
+              element={
+                <PrivetRout>
+                  <h1>Shamim</h1>
+                </PrivetRout>
+              }></Route>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </PageTransitionFade>
+      </AnimatePresence>
+      <ToastContainer />
+    </>
   );
 };
 
