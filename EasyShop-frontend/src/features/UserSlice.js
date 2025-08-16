@@ -63,11 +63,10 @@ export const resetOTPTOKenCreate = createAsyncThunk("user/OTPTokenCreate", async
     return rejectWithValue(error.response.data);
   }
 });
-export const resetPassSave = createAsyncThunk("user/resetPassSave", async (_, { rejectWithValue }) => {
+export const resetPassSave = createAsyncThunk("user/resetPassSave", async ({ password, Confirmpassword }, { rejectWithValue }) => {
   try {
-    const res = await axiosUserInstance.post("/join/reset_password_save", {});
+    const res = await axiosUserInstance.post("/join/reset_password_save", { password, Confirmpassword });
     console.log(res);
-
     return res.data;
   } catch (error) {
     console.log(error);
@@ -91,7 +90,7 @@ const UserSlice = createSlice({
       state.loading = false;
     },
     resetstate: (state) => {
-      ((state.user = null), (state.loading = false), (state.error = null));
+      (state.user = null), (state.loading = false), (state.error = null);
     },
   },
   extraReducers: (builder) => {
@@ -177,7 +176,8 @@ const UserSlice = createSlice({
         state.user = null;
       })
       .addCase(resetPassSave.pending, (state) => {
-        state.loading = true;
+        state.loading = false;
+        state.errorr = null
       })
       .addCase(resetPassSave.fulfilled, (state, action) => {
         state.loading = false;
@@ -187,7 +187,7 @@ const UserSlice = createSlice({
       .addCase(resetPassSave.rejected, (state, action) => {
         state.loading = false;
         state.message = action.error;
-        state.error = action;
+        state.errorr = action;
         state.user = null;
       });
   },

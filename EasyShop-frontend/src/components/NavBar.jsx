@@ -156,7 +156,7 @@ const NavBar = () => {
                       className={`p-2 flex transition-all duration-1000 justify-center items-center gap-3 ${!isDark ? "bg-black" : "bg-white"}  rounded-full  relative overflow-hidden`}>
                       <FaMoon className={`${isDark ? "text-black" : "text-white"}`} />
                       <FaSun className={`${isDark ? "text-black" : "text-white"}`} />
-                      <div className={`w-7 h-7 ${isDark ? "bg-black left-[2px]" : "bg-white left-[30px]"}  rounded-full absolute transition-all duration-1000 ease-in-out`}></div>
+                      <div className={`w-7 h-7 ${isDark ? "bg-black left-[2px]" : "bg-white left-[27px]"}  rounded-full absolute transition-all duration-1000 ease-in-out`}></div>
                     </div>
                   </button>
                   

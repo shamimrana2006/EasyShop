@@ -36,17 +36,33 @@ const NewPass = () => {
 
   const HandleChangePassword = async (e) => {
     e.preventDefault();
-    const result = dispatch(resetPassSave()).then((res) => {
-      if (userFetch.fulfilled.match(res)) {
-        return res; // success হলে resolve
-      }
-      return Promise.reject(res); // ব্যর্থ হলে reject
-    });
+    const formData = new FormData(e.target);
 
+    const data = Object.fromEntries(formData.entries());
+
+    console.log(data);
+
+    const password = data.password;
+    const Confirmpassword = data.repassword;
+
+    const result = dispatch(resetPassSave({ password, Confirmpassword }))
+      .unwrap()
+      .then((res) => {
+        navigate("/auth/login");
+        return res;
+      })
+      .catch((err) => {
+        throw err;
+      });
     toast.promise(result, {
       pending: "password changing...",
       success: "successfully changed password ",
-      error: "password saving error/expire schedule",
+      error: {
+        render({ data }) {
+          console.log(data);
+          return data?.message || data;
+        },
+      },
     });
 
     // userFetch.fulfilled.match(result) ? toast("shamim working") : alert("not working shamim");
@@ -66,11 +82,11 @@ const NewPass = () => {
             <form onSubmit={HandleChangePassword}>
               <div className="flex flex-col gap-2 mt-2">
                 <div className="flex justify-between items-center gap-2 border-b pl-3 p-2 rounded-[15px] border-gray-300">
-                  <input onChange={(e) => setUserName(e.target.value)} type={showPassword ? "text" : "password"} className="outline-none " autoFocus placeholder="New Password" />
+                  <input onChange={(e) => setUserName(e.target.value)} type={showPassword ? "text" : "password"} className="outline-none " name="password" autoFocus placeholder="New Password" />
                   <FaLock />
                 </div>
                 <div className="flex justify-between items-center gap-2 border-b pl-3 p-2 rounded-[15px] border-gray-300">
-                  <input onChange={(e) => setPassword(e.target.value)} type={showPassword ? "text" : "password"} className="outline-none " placeholder="Confirm Password" />
+                  <input onChange={(e) => setPassword(e.target.value)} type={showPassword ? "text" : "password"} className="outline-none " name="repassword" placeholder="Confirm Password" />
                   <FaEye className={showPassword ? "hidden" : "block"} onClick={() => setShowPassword(true)} />
                   <FaLock className={showPassword ? "block" : "hidden"} onClick={() => setShowPassword(false)} />
                 </div>

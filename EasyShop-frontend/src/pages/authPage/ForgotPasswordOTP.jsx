@@ -33,20 +33,22 @@ const ForgotPasswordOTP = () => {
   }, [user.user]);
 
   const resentOTP = async () => {
-    console.log(email);
-
-    const result = dispatch(resetPassOTP({ email })).then((res) => {
-      if (resetPassOTP.fulfilled.match(res)) {
+    const result = dispatch(resetPassOTP({ email }))
+      .then((res) => {
         return res;
-      } else {
-        return Promise.reject(res);
-      }
-    });
+      })
+      .catch((err) => {
+        throw err;
+      });
 
     toast.promise(result, {
       pending: "otp resending...",
       success: "OTP send successfully ",
-      error: "not sending",
+      error: {
+        render(data) {
+          return data.message || data;
+        },
+      },
     });
   };
 

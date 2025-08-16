@@ -286,7 +286,7 @@ const reset_password_otp_token = async (req, res) => {
 
     if (req.isValidOTP) {
       ////("shamim");
-      const token = await tokenCreate(user, process.env.RESET_PASS_KEY, "5m");
+      const token = await tokenCreate(user, process.env.SECRETE_JWT_KEY, "5m");
 
       cookieGenerate(res, {
         cookieName: "resetPassToken",
@@ -312,15 +312,55 @@ const reset_password_otp_token = async (req, res) => {
 };
 //reset save password
 const token_checkFor_resetPass = async (req, res) => {
-  const isSecure = req.secure;
-  res.clearCookie("resetPassToken", {
-    httpOnly: isSecure,
-    secure: isSecure,
-    sameSite: isSecure ? "None" : "lax",
-    path: "/",
-  });
+  try {
+    const isSecure = req.secure;
 
-  res.send("shamim kaj korche valid", req.user);
+    const password = req.body.password;
+    const confirm_password = req.body.Confirmpassword;
+
+    if (!password) {
+      error_res(res, { status_code: 404, message: "password Required" });
+    }
+
+    if (
+      !password.match(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*<>/]).{6,}$/
+      )
+    ) {
+      return error_res(res, {
+        status_code: 400,
+        message:
+          "password require at least a uppercase, lowercase, digit and spacial character",
+      });
+    }
+
+    if (!(password == confirm_password)) {
+      error_res(res, { status_code: 400, message: "password not match" });
+    }
+
+    const HashPassword = await CreateHashText(password);
+    res.clearCookie("resetPassToken", {
+      httpOnly: isSecure,
+      secure: isSecure,
+      sameSite: isSecure ? "None" : "lax",
+      path: "/",
+    });
+    const changingPassword = await Users_collection.findOneAndUpdate(
+      {
+        userName: req.user.userName,
+      },
+      { $set: { password: HashPassword } },
+      { new: true }
+    );
+
+    success_res(res, {
+      status_code: 201,
+      message: "password changed Successfully",
+      payLoad: changingPassword.toObject(),
+    });
+  } catch (error) {
+    error_res(res, { message: error.message, status_code: 404 });
+  }
 };
 //nothing
 const reset_password_token = async (req, res) => {

@@ -28,20 +28,24 @@ const ForgotPassword = () => {
   const HandleSendOTP = async (e) => {
     e.preventDefault();
     if (!Email) return;
-    const result = dispath(resetPassOTP({ email: Email })).then((res) => {
-      if (resetPassOTP.fulfilled.match(res)) {
+    const result = dispath(resetPassOTP({ email: Email }))
+      .unwrap()
+      .then((res) => {
         localStorage.setItem("ResetPassEmail", Email);
         navigate("/auth/forgot_OTP");
-        return res;
-      } else {
-        return Promise.reject(res);
-      }
-    });
+      })
+      .catch((err) => {
+        throw err;
+      });
 
     toast.promise(result, {
       pending: "OTP sending...",
       success: "reset otp send successfully",
-      error: user?.error?.message || "something went wrong",
+      error: {
+        render(data) {
+          return data?.message || data;
+        },
+      },
     });
   };
 
