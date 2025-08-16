@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { IoBagHandleOutline } from "react-icons/io5";
 import { CiHeart, CiMenuKebab, CiSettings, CiSun, CiUser } from "react-icons/ci";
 import { FaBackward, FaCalendarMinus, FaFacebook, FaInstagram, FaLinkedin, FaMoon, FaSearch, FaSun, FaTwitter } from "react-icons/fa";
@@ -11,17 +11,20 @@ const NavBar = () => {
   const userState = useSelector((state) => state.userStore);
   const location = useLocation();
   const dispatch = useDispatch();
+  const [isDark, setIsdark] = useState(null);
 
   useEffect(() => {
     if (!userState?.theme) {
+      setIsdark(true);
       document.documentElement.classList.remove("dark");
     } else {
+      setIsdark(null);
       document.documentElement.classList.add("dark");
     }
   }, [userState]);
   const theme = JSON.parse(localStorage.getItem("theme"));
   const themeToggle = async () => {
-
+    setIsdark(!isDark)
     const newTheme = !theme;
     localStorage.setItem("theme", newTheme);
     newTheme ? document.documentElement.classList.add("dark") : document.documentElement.classList.remove("dark");
@@ -115,32 +118,31 @@ const NavBar = () => {
           <div className="md:flex flex lnd  gap-3 font-bold items-center text-4xl justify-center">
             <div className={`navITEMForUser gap-4 items-center justify-center ${userState?.user ? "flex" : "hidden"} `}>
               <div className="relative group">
-                <div className="p-2 z-[99999] text-sm absolute  backdrop-blur-2xl flex-col gap-2 profileMenu rounded-2xl right-0 top-8 hidden group-hover:flex   justify-center">
-                  <NavLink to={"/user/profile"} className="  bg-ptext flex justify-between items-center text-[12px] p-[5px] rounded text-text cursor-pointer">
+                <div className="p-2 z-[99999] text-sm absolute  backdrop-blur-2xl flex-col gap-2 profileMenu rounded-2xl right-0 top-8 hidden group-hover:flex items-center-safe   justify-center">
+                  <NavLink to={"/user/profile"} className=" w-full bg-ptext flex justify-between items-center text-[12px] p-[5px] rounded text-text cursor-pointer">
                     Profile
                     <CiUser />
                   </NavLink>
                   {userState?.user?.payLoad?.isAdmin ? (
-                    <Link to={"/user/dashboard"} className="  bg-ptext flex justify-between items-center gap-2 text-[12px] p-[5px] rounded text-text cursor-pointer ">
+                    <Link to={"/user/dashboard"} className=" w-full bg-ptext flex justify-between items-center gap-2 text-[12px] p-[5px] rounded text-text cursor-pointer ">
                       Dashboard
                       <FaCalendarMinus />
                     </Link>
                   ) : (
                     <></>
                   )}
-                  <button onClick={themeToggle} className=" ">
+                  <button onClick={themeToggle} className="outline-none ">
                     <div
-                    
                       style={{
                         boxShadow: "inset 0 0 10px rgba(0,0,0,0.5)",
                       }}
-                      className={`p-2 flex transition-all duration-1000 justify-center items-center gap-3 ${!theme ? "bg-black" : "bg-white"}  rounded-full  relative overflow-hidden`}>
-                      <FaMoon className={`${theme ? "text-black" : "text-white"}`} />
-                      <FaSun className={`${theme ? "text-black" : "text-white"}`} />
-                      <div className={`w-7 h-7 ${theme ? "bg-black left-[2px]" : "bg-white left-[30px]"}  rounded-full absolute transition-all duration-1000 ease-in-out`}></div>
+                      className={`p-2 flex transition-all duration-1000 justify-center items-center gap-3 ${!isDark ? "bg-black" : "bg-white"}  rounded-full  relative overflow-hidden`}>
+                      <FaMoon className={`${isDark ? "text-black" : "text-white"}`} />
+                      <FaSun className={`${isDark ? "text-black" : "text-white"}`} />
+                      <div className={`w-7 h-7 ${isDark ? "bg-black left-[2px]" : "bg-white left-[30px]"}  rounded-full absolute transition-all duration-1000 ease-in-out`}></div>
                     </div>
                   </button>
-                  <span onClick={logoutCall} className="  bg-danger text-[12px] p-[5px] rounded text-white  cursor-pointer ">
+                  <span onClick={logoutCall} className="w-full  bg-danger text-[12px] p-[5px] rounded text-white  cursor-pointer ">
                     Log Out
                   </span>
                 </div>
