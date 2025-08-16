@@ -20,6 +20,14 @@ export const userFetch = createAsyncThunk("user/fetchData", async ({ method = "g
   }
 });
 
+export const userDAtaProfile = createAsyncThunk("user/profile", async (_, { rejectWithValue }) => {
+  try {
+    const res = await axiosUserInstance.get("/join/profile");
+    return res.data;
+  } catch (error) {
+    return rejectWithValue(error);
+  }
+});
 export const userLogout = createAsyncThunk("user/logOout", async (_, { rejectWithValue }) => {
   try {
     const res = await axiosUserInstance.get("/join/logout");
@@ -48,7 +56,7 @@ export const resetOTPTOKenCreate = createAsyncThunk("user/OTPTokenCreate", async
   try {
     const res = await axiosUserInstance.post("/join/reset_password_otp_token", { email, otp });
     console.log(res);
-    
+
     return res.data;
   } catch (error) {
     console.log(error);
@@ -63,6 +71,7 @@ const UserSlice = createSlice({
     loading: true,
     error: null,
     message: "",
+    theme: "",
   },
   reducers: {
     userObserve: (state, action) => {
@@ -140,6 +149,20 @@ const UserSlice = createSlice({
         state.loading = false;
         state.message = "";
         state.error = action;
+      })
+      .addCase(userDAtaProfile.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(userDAtaProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.message = { state: "success" };
+        state.user = action.payload;
+      })
+      .addCase(userDAtaProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.message = action.error;
+        state.error = action;
+        state.user = null;
       });
   },
 });

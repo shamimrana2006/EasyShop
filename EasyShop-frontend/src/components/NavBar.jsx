@@ -55,18 +55,18 @@ const NavBar = () => {
   };
   const menuList = (
     <>
-      <NavLink to={"/"}>Home</NavLink>
-      <NavLink to={"/private"}>Private</NavLink>
-      <NavLink to={"/ment"} className="">
+      <NavLink  className={"!px-2"} to={"/"}>Home</NavLink>
+      <NavLink  className={"!px-2"} to={"/private"}>Private</NavLink>
+      <NavLink  className={"!px-2"} to={"/ment"} className="">
         {" "}
         man
       </NavLink>
 
-      <NavLink to={"/women"}>Women's</NavLink>
-      <NavLink to={"/jewelry"}>Jewelry</NavLink>
-      <NavLink to={"/Perfume"}>Perfume</NavLink>
-      <NavLink to={"/Blog"}>Blog</NavLink>
-      <NavLink to={"/offers"}>Hot Offers</NavLink>
+      <NavLink  className={"!px-2"} to={"/women"}>Women's</NavLink>
+      <NavLink  className={"!px-2"} to={"/jewelry"}>Jewelry</NavLink>
+      <NavLink  className={"!px-2"} to={"/Perfume"}>Perfume</NavLink>
+      <NavLink className={"!px-2"}  to={"/Blog"}>Blog</NavLink>
+      <NavLink  className={"!px-2"} to={"/offers"}>Hot Offers</NavLink>
     </>
   );
   const ifProfileSoHidden = location.pathname.includes("/user/profile") ? "" : "md:flex";

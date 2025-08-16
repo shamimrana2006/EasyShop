@@ -1,6 +1,6 @@
 /* @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap"); */
 @import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Outfit:wght@100..900&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Agbalumo&family=Dancing+Script:wght@400..700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Agbalumo&family=Dancing+Script:wght@400..700&display=swap");
 
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
@@ -19,13 +19,11 @@
   font-family: "Outfit", sans-serif;
 }
 
-
 @layer components {
   .transition-smooth {
     @apply transition-all duration-300 ease-in-out;
   }
 }
- 
 
 /* 1. Base Theme Variable Setup */
 :root {
@@ -78,7 +76,7 @@ button {
 }
 
 @theme {
-  --color-danger : var(--color-danger);
+  --color-danger: var(--color-danger);
   --color-pbox: var(--color-pbox);
   --color-bg: var(--color-bg);
   --color-text: var(--color-text);
@@ -92,7 +90,8 @@ button {
 
 .active {
   background: var(--color-secondary) !important;
-color: black;
+  color: black;
+
 }
 
 .btn {
@@ -112,8 +111,7 @@ color: black;
   border-radius: 7px;
 }
 
-.fontLogo{
+.fontLogo {
   font-family: "Agbalumo", system-ui;
   font-weight: bold;
-  
 }

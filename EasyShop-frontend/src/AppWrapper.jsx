@@ -1,16 +1,15 @@
 import { useEffect } from "react";
 import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
-import { userFetch } from "./features/UserSlice";
+import { userFetch, userDAtaProfile } from "./features/UserSlice";
 
 export default function AppWrapper({ children }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userStore);
   useEffect(() => {
     console.count("appwrapper");
-    ////("appwapper");
-
-    dispatch(userFetch({ url: "/join/profile" }));
+    // dispatch(userFetch({ url: "/join/profile" }));
+    dispatch(userDAtaProfile());
   }, [dispatch, Cookies.get("token")]);
 
   useEffect(() => {

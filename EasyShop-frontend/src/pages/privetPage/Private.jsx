@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useLocation, useNavigate } from "react-router";
 import Loading from "../../Layout/Loading";
 import { useEffect, useState } from "react";
-import { userFetch } from "../../features/UserSlice";
+import { userDAtaProfile, userFetch } from "../../features/UserSlice";
 import { FaMoon, FaSun } from "react-icons/fa";
 
 const PrivetRout = ({ children }) => {
@@ -18,18 +18,16 @@ const PrivetRout = ({ children }) => {
   }, [user.loading]);
 
   useEffect(() => {
-    dispatch(userFetch({ url: "/join/profile" }));
-  }, []);
+    console.log(" ami hitted");
+    
+    dispatch(userDAtaProfile());
+  }, [dispatch]);
 
-  const userCalling = () => {
-    dispatch(userFetch({ url: "/join/profile" }));
-  };
+
   if (user?.loading) {
     return <Loading />;
   }
-  // if (!user.user && !user?.loading) {
-  //   return <Navigate to={"/auth/login"} replace></Navigate>;
-  // }
+ 
 
   return (
     <>
