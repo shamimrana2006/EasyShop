@@ -145,6 +145,9 @@ const NavBar = () => {
                   ) : (
                     <></>
                   )}
+                  <span onClick={logoutCall} className="w-full  bg-danger text-[12px] p-[5px] rounded text-white  cursor-pointer ">
+                    Log Out
+                  </span>
                   <button onClick={themeToggle} className="outline-none ">
                     <div
                       style={{
@@ -156,9 +159,7 @@ const NavBar = () => {
                       <div className={`w-7 h-7 ${isDark ? "bg-black left-[2px]" : "bg-white left-[30px]"}  rounded-full absolute transition-all duration-1000 ease-in-out`}></div>
                     </div>
                   </button>
-                  <span onClick={logoutCall} className="w-full  bg-danger text-[12px] p-[5px] rounded text-white  cursor-pointer ">
-                    Log Out
-                  </span>
+                  
                 </div>
                 <div
                   onClick={() => {

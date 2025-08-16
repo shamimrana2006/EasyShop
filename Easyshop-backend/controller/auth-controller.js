@@ -282,10 +282,11 @@ const reset_password_otp_token = async (req, res) => {
   try {
     const isSecure = req.secure;
     const user = req.user.toObject();
+    console.log("ami user:", user);
 
     if (req.isValidOTP) {
       ////("shamim");
-      const token = await tokenCreate(user, "ssaa", "5m");
+      const token = await tokenCreate(user, process.env.RESET_PASS_KEY, "5m");
 
       cookieGenerate(res, {
         cookieName: "resetPassToken",
@@ -308,6 +309,18 @@ const reset_password_otp_token = async (req, res) => {
       },
     });
   }
+};
+//reset save password
+const token_checkFor_resetPass = async (req, res) => {
+  const isSecure = req.secure;
+  res.clearCookie("resetPassToken", {
+    httpOnly: isSecure,
+    secure: isSecure,
+    sameSite: isSecure ? "None" : "lax",
+    path: "/",
+  });
+
+  res.send("shamim kaj korche valid", req.user);
 };
 //nothing
 const reset_password_token = async (req, res) => {
@@ -372,9 +385,6 @@ const user_updating = async (req, res) => {
   }
 };
 
-const token_checkFor_resetPass = async (req, res) => {
-  "";
-};
 module.exports = {
   register_controller,
   login_controller,

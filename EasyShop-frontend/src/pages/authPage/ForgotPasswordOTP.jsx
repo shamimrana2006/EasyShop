@@ -66,7 +66,7 @@ const ForgotPasswordOTP = () => {
     });
     toast.promise(result, {
       pending: "otp checking...",
-      success: "You can change your password ",
+      success: "You can change your password validity in 5minute",
       error: "not valid user/otp",
     });
   };

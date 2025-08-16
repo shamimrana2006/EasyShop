@@ -63,6 +63,17 @@ export const resetOTPTOKenCreate = createAsyncThunk("user/OTPTokenCreate", async
     return rejectWithValue(error.response.data);
   }
 });
+export const resetPassSave = createAsyncThunk("user/resetPassSave", async (_, { rejectWithValue }) => {
+  try {
+    const res = await axiosUserInstance.post("/join/reset_password_save", {});
+    console.log(res);
+
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    return rejectWithValue(error.response.data);
+  }
+});
 
 const UserSlice = createSlice({
   name: "user",
@@ -160,6 +171,20 @@ const UserSlice = createSlice({
         state.theme = action.payload.payLoad.isDarkMode;
       })
       .addCase(userDAtaProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.message = action.error;
+        state.error = action;
+        state.user = null;
+      })
+      .addCase(resetPassSave.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(resetPassSave.fulfilled, (state, action) => {
+        state.loading = false;
+        state.message = { state: "success" };
+        state.check = action.payload;
+      })
+      .addCase(resetPassSave.rejected, (state, action) => {
         state.loading = false;
         state.message = action.error;
         state.error = action;

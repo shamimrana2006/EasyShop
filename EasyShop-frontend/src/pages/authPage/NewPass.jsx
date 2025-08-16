@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Loading from "../../Layout/Loading";
-import { resetstate, userFetch } from "../../features/UserSlice";
+import { resetPassSave, resetstate, userFetch } from "../../features/UserSlice";
 import { toast } from "react-toastify";
 
 const NewPass = () => {
@@ -21,12 +21,12 @@ const NewPass = () => {
     return state.userStore;
   });
 
-  const dispath = useDispatch();
+  const dispatch = useDispatch();
   useEffect(() => {
     if (user.user && !user.loading) {
       navigate("/");
     } else {
-      dispath(resetstate());
+      dispatch(resetstate());
     }
   }, [user.user]);
 
@@ -36,14 +36,7 @@ const NewPass = () => {
 
   const HandleChangePassword = async (e) => {
     e.preventDefault();
-    if (!userName && !Password) return;
-    const result = dispath(
-      userFetch({
-        method: "post",
-        url: "/join/login",
-        payload: { UserName: userName, password: Password },
-      })
-    ).then((res) => {
+    const result = dispatch(resetPassSave()).then((res) => {
       if (userFetch.fulfilled.match(res)) {
         return res; // success হলে resolve
       }
@@ -51,10 +44,11 @@ const NewPass = () => {
     });
 
     toast.promise(result, {
-      pending: "login in...",
-      success: "login successfully",
-      error: user?.error ? (user?.error?.payload?.message ? "" : user?.error?.payload) : "",
+      pending: "password changing...",
+      success: "successfully changed password ",
+      error: "password saving error/expire schedule",
     });
+
     // userFetch.fulfilled.match(result) ? toast("shamim working") : alert("not working shamim");
   };
 

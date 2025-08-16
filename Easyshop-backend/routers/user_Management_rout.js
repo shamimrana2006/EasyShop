@@ -20,6 +20,9 @@ const { otp_Checking } = require("../middleware/OTP_Cheking");
 const { theme_toggling } = require("../controller/theme-toggle");
 const userManagement_router = require("express").Router();
 const Check_user_log = passport.authenticate("jwt", { session: false });
+const reset_pass_passport = passport.authenticate("jwtresetPass", {
+  session: false,
+});
 
 userManagement_router.get("/theme-toggle", Check_user_log, theme_toggling);
 userManagement_router.get("/logout", Check_user_log, LogoutAT);
@@ -38,6 +41,7 @@ userManagement_router.post(
   otp_Checking,
   verificationUpdating
 );
+//reset password ...
 userManagement_router.post("/reset-pass-otp", reset_password_otp);
 userManagement_router.post(
   "/reset_password_otp_token",
@@ -45,9 +49,11 @@ userManagement_router.post(
   reset_password_otp_token
 );
 userManagement_router.post(
-  "/reset_password_otp_token",
+  "/reset_password_save",
+  reset_pass_passport,
   token_checkFor_resetPass
 );
+//end...
 userManagement_router.post("/update-user-info", Check_user_log, user_updating);
 
 module.exports = {

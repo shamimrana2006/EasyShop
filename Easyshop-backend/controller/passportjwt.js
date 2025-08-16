@@ -35,3 +35,27 @@ passport.use(
     }
   })
 );
+//reset pass
+var resetPass_token_cookieExtractor = function (req) {
+  let token = null;
+  if (req && req.cookies) {
+    token = req.cookies["resetPassToken"];
+  }
+  return token;
+};
+
+const resetPassToen = {
+  jwtFromRequest: resetPass_token_cookieExtractor,
+  secretOrKey: process.env.RESET_PASS_KEY,
+};
+
+passport.use(
+  "jwtresetPass",
+  new JwtStrategy(resetPassToen, async function (jwt_payload, done) {
+    try {
+      return done(null, jwt_payload);
+    } catch (err) {
+      return done(err, false);
+    }
+  })
+);
