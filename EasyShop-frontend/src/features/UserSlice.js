@@ -157,6 +157,7 @@ const UserSlice = createSlice({
         state.loading = false;
         state.message = { state: "success" };
         state.user = action.payload;
+        state.theme = action.payload.payLoad.isDarkMode;
       })
       .addCase(userDAtaProfile.rejected, (state, action) => {
         state.loading = false;

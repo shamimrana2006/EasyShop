@@ -15,16 +15,16 @@ const NavBar = () => {
 
   useEffect(() => {
     if (!userState?.theme) {
-      setIsdark(true);
+      setIsdark(null);
       document.documentElement.classList.remove("dark");
     } else {
-      setIsdark(null);
+      setIsdark(true);
       document.documentElement.classList.add("dark");
     }
   }, [userState]);
   const theme = JSON.parse(localStorage.getItem("theme"));
   const themeToggle = async () => {
-    setIsdark(!isDark)
+    setIsdark(!isDark);
     const newTheme = !theme;
     localStorage.setItem("theme", newTheme);
     newTheme ? document.documentElement.classList.add("dark") : document.documentElement.classList.remove("dark");
@@ -55,18 +55,32 @@ const NavBar = () => {
   };
   const menuList = (
     <>
-      <NavLink  className={"!px-2"} to={"/"}>Home</NavLink>
-      <NavLink  className={"!px-2"} to={"/private"}>Private</NavLink>
-      <NavLink  className={"!px-2"} to={"/ment"} className="">
+      <NavLink className={"!px-2"} to={"/"}>
+        Home
+      </NavLink>
+      <NavLink className={"!px-2"} to={"/private"}>
+        Private
+      </NavLink>
+      <NavLink className={"!px-2"} to={"/ment"} className="">
         {" "}
         man
       </NavLink>
 
-      <NavLink  className={"!px-2"} to={"/women"}>Women's</NavLink>
-      <NavLink  className={"!px-2"} to={"/jewelry"}>Jewelry</NavLink>
-      <NavLink  className={"!px-2"} to={"/Perfume"}>Perfume</NavLink>
-      <NavLink className={"!px-2"}  to={"/Blog"}>Blog</NavLink>
-      <NavLink  className={"!px-2"} to={"/offers"}>Hot Offers</NavLink>
+      <NavLink className={"!px-2"} to={"/women"}>
+        Women's
+      </NavLink>
+      <NavLink className={"!px-2"} to={"/jewelry"}>
+        Jewelry
+      </NavLink>
+      <NavLink className={"!px-2"} to={"/Perfume"}>
+        Perfume
+      </NavLink>
+      <NavLink className={"!px-2"} to={"/Blog"}>
+        Blog
+      </NavLink>
+      <NavLink className={"!px-2"} to={"/offers"}>
+        Hot Offers
+      </NavLink>
     </>
   );
   const ifProfileSoHidden = location.pathname.includes("/user/profile") ? "" : "md:flex";
