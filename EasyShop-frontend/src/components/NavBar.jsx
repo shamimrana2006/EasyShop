@@ -87,7 +87,7 @@ const NavBar = () => {
   const ifProfileSoHidden = location.pathname.includes("/user/profile") ? "" : "md:flex";
   return (
     <div className="sticky navmain top-0 z-50">
-      <div className="bg-bg text-text border-border">
+      <div  className="bg-bg text-text border-border">
         {/* topbar */}
         <div className={`bg-bg containerr hidden justify-between items-center py-2 ${ifProfileSoHidden} focus:text-ptext `}>
           <div className="socialIcons flex text-gray-500 gap-1">

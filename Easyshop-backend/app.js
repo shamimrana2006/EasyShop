@@ -2,6 +2,8 @@ const express = require("express");
 require("dotenv").config();
 const passport = require("passport");
 const cors = require("cors");
+const swaggerUi = require("swagger-ui-express");
+const swaggerFile = require("./docs/swagger-output.json");
 var cookieParser = require("cookie-parser");
 const {
   client_error,
@@ -11,9 +13,11 @@ const { userManagement_router } = require("./routers/user_Management_rout");
 require("./controller/passportjwt");
 const { modngoDBconnection } = require("./controller/mongodDBConnection");
 const { corseSEtup } = require("./controller/Cors");
+
 const app = express();
 
 //-------------------------------------------------------initial setup-------------------------------
+
 app.enable("trust proxy");
 modngoDBconnection();
 app.use(cors(corseSEtup));
@@ -21,8 +25,15 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
+
 //-------------------------------------------------------routing-------------------------------
 
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
+app.use((req, res, next) => {
+  console.log("API request URL:", req.originalUrl);
+  console.log("API request from:", req.headers.origin);
+  next();
+});
 app.get("/", (req, res) => {
   res.send("our server its working now ....");
 });

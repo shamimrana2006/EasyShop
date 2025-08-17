@@ -22,9 +22,10 @@ const reset_pass_passport = passport.authenticate("jwtresetPass", {
   session: false,
 });
 
+
+userManagement_router.post("/registration", register_controller);
 userManagement_router.get("/theme-toggle", Check_user_log, theme_toggling);
 userManagement_router.get("/logout", Check_user_log, LogoutAT);
-userManagement_router.post("/registration", register_controller);
 userManagement_router.post("/login", login_controller);
 userManagement_router.get("/resetDB", reset_db_controller);
 userManagement_router.get("/profile", Check_user_log, profile_controller);
