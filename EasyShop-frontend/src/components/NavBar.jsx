@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loading from "../Layout/Loading";
 import { ThemeToggle, userLogout } from "../features/UserSlice";
 import { Navigate } from "react-router";
+import "./navbar.css";
 const NavBar = () => {
   const userState = useSelector((state) => state.userStore);
   const location = useLocation();
@@ -85,7 +86,7 @@ const NavBar = () => {
   );
   const ifProfileSoHidden = location.pathname.includes("/user/profile") ? "" : "md:flex";
   return (
-    <div className="sticky top-0 z-50">
+    <div className="sticky navmain top-0 z-50">
       <div className="bg-bg text-text border-border">
         {/* topbar */}
         <div className={`bg-bg containerr hidden justify-between items-center py-2 ${ifProfileSoHidden} focus:text-ptext `}>
@@ -122,7 +123,7 @@ const NavBar = () => {
           {location.pathname.includes("/user/profile") ? (
             <></>
           ) : (
-            <div className={`inputBox z-50 flex gap-1  group p-2 px-5 items-center md:w-[60%]  border  border-border rounded-[14px] justify-between  `}>
+            <div className={`inputBox z-50 hidden md:flex gap-1  group p-2 px-5 items-center md:w-[60%]  border  border-border rounded-[14px] justify-between  `}>
               <FaBackward className="hidden mr-2 bkw" onClick={searchButton} />
               <FaSearch className="text-text hidden md:block group-hover:w-[15px] origin-top-right transition-all duration-300 ease-in-out w-0  mr-2" />
               <input type="text" className="searchINput md:w-full placeholder:text-ptext w-0 not-focus:w-0 md:not-focus:w-full  group-hover:w-full transition-all duration-300 ease-in-out group outline-none focus:outline-none border-none bg-transparent text-text" placeholder="Enter your product name..." />
@@ -159,7 +160,6 @@ const NavBar = () => {
                       <div className={`w-7 h-7 ${isDark ? "bg-black left-[2px]" : "bg-white left-[27px]"}  rounded-full absolute transition-all duration-1000 ease-in-out`}></div>
                     </div>
                   </button>
-                  
                 </div>
                 <div
                   onClick={() => {
