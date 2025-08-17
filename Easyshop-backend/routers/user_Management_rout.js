@@ -7,10 +7,8 @@ const {
   reset_db_controller,
   profile_controller,
   otp_sender_verify,
-
   verificationUpdating,
   reset_password_otp,
-
   user_updating,
   LogoutAT,
   reset_password_otp_token,

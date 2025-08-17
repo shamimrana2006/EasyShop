@@ -33,20 +33,14 @@ const ForgotPasswordOTP = () => {
   }, [user.user]);
 
   const resentOTP = async () => {
-    const result = dispatch(resetPassOTP({ email }))
-      .then((res) => {
-        return res;
-      })
-      .catch((err) => {
-        throw err;
-      });
+    const result = dispatch(resetPassOTP({ email })).unwrap();
 
     toast.promise(result, {
       pending: "otp resending...",
       success: "OTP send successfully ",
       error: {
-        render(data) {
-          return data.message || data;
+        render({ data }) {
+          return data.message || data || "something went wrong";
         },
       },
     });
@@ -56,20 +50,21 @@ const ForgotPasswordOTP = () => {
     e.preventDefault();
 
     const otp = OTPREf.current.value;
-    const result = dispatch(resetOTPTOKenCreate({ email, otp })).then((res) => {
-      if (resetOTPTOKenCreate.fulfilled.match(res)) {
-        ////("shamim kaj korche opt valid ache");
-        navigate("/auth/resetPass");
-        return res;
-      } else {
-        ////("kaj korche na otp");
-        return Promise.reject(res);
-      }
-    });
+    const result = dispatch(resetOTPTOKenCreate({ email, otp })).unwrap();
+
     toast.promise(result, {
       pending: "otp checking...",
-      success: "You can change your password validity in 5minute",
-      error: "not valid user/otp",
+      success: {
+        render() {
+          navigate("/auth/resetPass");
+          return "You can change your password validity in 5 minute";
+        },
+      },
+      error: {
+        render({ data }) {
+          return data || data?.message || "something went wrong";
+        },
+      },
     });
   };
 
@@ -100,7 +95,7 @@ const ForgotPasswordOTP = () => {
                     Resend OTP
                   </span>
                 </span>
-                <span className="text-primary">{user?.error ? (user?.error?.payload?.message ? "" : user?.error?.payload) : ""}</span>
+                <span className="text-danger">{user?.error ? (user?.error?.payload?.message ? "" : user?.error?.payload) : ""}</span>
                 <button className="btn btn-sm mt-4">Send OTP</button>
                 <span className=" mt-4">
                   Login with Password{" "}

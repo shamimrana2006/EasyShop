@@ -42,18 +42,17 @@ const Login = () => {
         method: "post",
         url: "/join/login",
         payload: { UserName: userName, password: Password },
-      }),
-    ).then((res) => {
-      if (userFetch.fulfilled.match(res)) {
-        return res; // success হলে resolve
-      }
-      return Promise.reject(res); // ব্যর্থ হলে reject
-    });
+      })
+    ).unwrap();
 
     toast.promise(result, {
       pending: "login in...",
       success: "login successfully",
-      error: user?.error ? (user?.error?.payload?.message ? "" : user?.error?.payload) : "",
+      error: {
+        render({ data }) {
+          return data || "something went wrong";
+        },
+      },
     });
     // userFetch.fulfilled.match(result) ? toast("shamim working") : alert("not working shamim");
   };

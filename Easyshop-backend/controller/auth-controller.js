@@ -317,6 +317,7 @@ const token_checkFor_resetPass = async (req, res) => {
 
     const password = req.body.password;
     const confirm_password = req.body.Confirmpassword;
+    console.log("passowrds=====", password, confirm_password);
 
     if (!password) {
       error_res(res, { status_code: 404, message: "password Required" });
@@ -334,11 +335,14 @@ const token_checkFor_resetPass = async (req, res) => {
       });
     }
 
+
     if (!(password == confirm_password)) {
       error_res(res, { status_code: 400, message: "password not match" });
     }
 
     const HashPassword = await CreateHashText(password);
+    console.log("hashpassword=========",HashPassword);
+    
     res.clearCookie("resetPassToken", {
       httpOnly: isSecure,
       secure: isSecure,
@@ -347,7 +351,7 @@ const token_checkFor_resetPass = async (req, res) => {
     });
     const changingPassword = await Users_collection.findOneAndUpdate(
       {
-        userName: req.user.userName,
+        UserName: req.user.UserName,
       },
       { $set: { password: HashPassword } },
       { new: true }

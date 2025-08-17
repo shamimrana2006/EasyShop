@@ -42,25 +42,23 @@ const NewPass = () => {
 
     console.log(data);
 
-    const password = data.password;
-    const Confirmpassword = data.repassword;
+    const password = data?.password;
+    const Confirmpassword = data?.repassword;
 
-    const result = dispatch(resetPassSave({ password, Confirmpassword }))
-      .unwrap()
-      .then((res) => {
-        navigate("/auth/login");
-        return res;
-      })
-      .catch((err) => {
-        throw err;
-      });
+    const result = dispatch(resetPassSave({ password, Confirmpassword })).unwrap();
+
     toast.promise(result, {
       pending: "password changing...",
-      success: "successfully changed password ",
+      success: {
+        render() {
+          navigate("/auth/login");
+          return "successfully changed password ";
+        },
+      },
       error: {
         render({ data }) {
           console.log(data);
-          return data?.message || data;
+          return data?.message || data || "something went wrong";
         },
       },
     });

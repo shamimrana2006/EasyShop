@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../Layout/Loading";
 import { resetPassOTP, resetstate, userFetch } from "../../features/UserSlice";
 import { toast } from "react-toastify";
+import { PulseLoader, ScaleLoader } from "react-spinners";
 
 const ForgotPassword = () => {
   const dispath = useDispatch();
@@ -19,35 +20,30 @@ const ForgotPassword = () => {
     return state.userStore;
   });
 
+  useEffect(() => {
+    dispath(resetstate());
+  }, []);
   ////(localStorage.getItem("ResetPassEmail"));
-
-  if (user.loading) {
-    return <Loading></Loading>;
-  }
 
   const HandleSendOTP = async (e) => {
     e.preventDefault();
     if (!Email) return;
-    const result = dispath(resetPassOTP({ email: Email }))
-      .unwrap()
-      .then((res) => {
+    const result = dispath(resetPassOTP({ email: Email })).then((res) => {
+      if (resetPassOTP.fulfilled.match(res)) {
         localStorage.setItem("ResetPassEmail", Email);
         navigate("/auth/forgot_OTP");
-      })
-      .catch((err) => {
-        throw err;
-      });
-
-    toast.promise(result, {
-      pending: "OTP sending...",
-      success: "reset otp send successfully",
-      error: {
-        render(data) {
-          return data?.message || data;
-        },
-      },
+      }
     });
   };
+
+  console.log(user.error);
+  console.log(user.error?.payload?.response?.data || user?.error?.message || "something went wrong");
+
+  const errorShow = user?.error?.message;
+
+  if (user.loading) {
+    return <Loading></Loading>;
+  }
 
   return (
     <div className="flex justify-center h-[100vh] bg-bg items-center relative ">
@@ -72,8 +68,8 @@ const ForgotPassword = () => {
                     Login with Password
                   </Link>
                 </span>
-                <span className="text-primary">{user?.error ? (user?.error?.payload?.message ? "" : user?.error?.payload) : ""}</span>
-                <button className="btn btn-sm mt-4">Send OTP</button>
+                <span className="text-danger">{errorShow}</span>
+                <button className="btn btn-sm mt-4 flex gap-1 items-center justify-center "> {user?.loadingsendotp ? <ScaleLoader color="white" height={15} /> : ""} Send OTP</button>
                 <span className=" mt-4">
                   New to EasyShop{" "}
                   <Link className={"text-primary"} to={"/auth/register"}>

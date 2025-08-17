@@ -55,12 +55,10 @@ export const resetPassOTP = createAsyncThunk("user/resetPassOTP", async ({ email
 export const resetOTPTOKenCreate = createAsyncThunk("user/OTPTokenCreate", async ({ email, otp }, { rejectWithValue }) => {
   try {
     const res = await axiosUserInstance.post("/join/reset_password_otp_token", { email, otp });
-    console.log(res);
-
     return res.data;
   } catch (error) {
     console.log(error);
-    return rejectWithValue(error.response.data);
+    return rejectWithValue(error?.response?.data?.message || error || "otp check error");
   }
 });
 export const resetPassSave = createAsyncThunk("user/resetPassSave", async ({ password, Confirmpassword }, { rejectWithValue }) => {
@@ -70,7 +68,7 @@ export const resetPassSave = createAsyncThunk("user/resetPassSave", async ({ pas
     return res.data;
   } catch (error) {
     console.log(error);
-    return rejectWithValue(error.response.data);
+    return rejectWithValue(error?.response?.data || "something went wrong");
   }
 });
 
@@ -124,14 +122,17 @@ const UserSlice = createSlice({
       })
       .addCase(resetPassOTP.pending, (state) => {
         state.loading = false;
+        state.loadingsendotp = true;
       })
       .addCase(resetPassOTP.fulfilled, (state, action) => {
+        state.loadingsendotp = false;
         state.loading = false;
         state.user = null;
         state.error = null;
         state.message = action;
       })
       .addCase(resetPassOTP.rejected, (state, action) => {
+        state.loadingsendotp = false;
         state.loading = false;
         state.message = "";
         state.error = action?.payload?.response?.data;
@@ -177,7 +178,7 @@ const UserSlice = createSlice({
       })
       .addCase(resetPassSave.pending, (state) => {
         state.loading = false;
-        state.errorr = null
+        state.errorr = null;
       })
       .addCase(resetPassSave.fulfilled, (state, action) => {
         state.loading = false;
