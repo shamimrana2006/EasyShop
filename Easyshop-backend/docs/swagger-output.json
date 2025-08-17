@@ -5,10 +5,9 @@
     "description": "User Management API",
     "version": "1.0.0"
   },
-  "host": "localhost:2006",
   "basePath": "/",
   "schemes": [
-    "http"
+    null
   ],
   "paths": {
     "/": {

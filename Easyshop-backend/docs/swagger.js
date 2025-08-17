@@ -5,8 +5,8 @@ const doc = {
     title: "EasyShop API",
     description: "User Management API",
   },
-  host: "localhost:2006",
-  schemes: ["http"],
+  host: process.env.URL,
+  schemes: [process.env.protocol],
 };
 
 const outputFile = "./swagger-output.json";
