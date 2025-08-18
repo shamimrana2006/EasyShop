@@ -1,5 +1,5 @@
 require("dotenv").config();
-const origins = [process.env.origin1, process.env.origin2];
+const origins = [process.env.origin1, process.env.origin2, process.env.URL];
 const CORS_LOCAL = process.env.CORS_LOCAL;
 
 const corseSEtup = {
