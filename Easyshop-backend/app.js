@@ -5,6 +5,7 @@ const cors = require("cors");
 const swaggerUi = require("swagger-ui-express");
 const swaggerFile = require("./swagger-output.json");
 var cookieParser = require("cookie-parser");
+const path = require("path");
 const {
   client_error,
   server_error,
@@ -28,7 +29,21 @@ app.use(passport.initialize());
 
 //-------------------------------------------------------routing-------------------------------
 
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
+// app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
+app.use(
+  "/docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerFile, {
+    customCss: ".swagger-ui .topbar { display: none }",
+    customSiteTitle: "EasyShop API Docs",
+  })
+);
+app.use(
+  "/swagger-ui",
+  express.static(path.dirname(require.resolve("swagger-ui-dist")))
+);
+
+
 app.use((req, res, next) => {
   console.log("API request URL:", req.originalUrl);
   console.log("API request from:", req.headers.origin);
