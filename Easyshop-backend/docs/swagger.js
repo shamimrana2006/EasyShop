@@ -5,8 +5,8 @@ const doc = {
     title: "EasyShop API",
     description: "User Management API",
   },
-  host: process.env.URL,
-  schemes: [process.env.protocol],
+  host: "https://easy-shop-backend-mocha.vercel.app",
+  schemes: ["https"],
 };
 
 const outputFile = "./swagger-output.json";
