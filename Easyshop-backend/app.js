@@ -3,7 +3,7 @@ require("dotenv").config();
 const passport = require("passport");
 const cors = require("cors");
 const swaggerUi = require("swagger-ui-express");
-const swaggerFile = require("./docs/swagger-output.json");
+const swaggerFile = require("./swagger-output.json");
 var cookieParser = require("cookie-parser");
 const {
   client_error,
