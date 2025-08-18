@@ -6,7 +6,7 @@ const doc = {
     description: "User Management API",
   },
   host: "https://easy-shop-backend-mocha.vercel.app",
-  schemes: ["http"],
+  schemes: ["https"],
 };
 
 const outputFile = "./swagger-output.json";
