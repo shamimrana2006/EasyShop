@@ -22,7 +22,7 @@ const app = express();
 app.enable("trust proxy");
 modngoDBconnection();
 app.use((req, res, next) => {
-  console.log(req.originalUrl);
+  console.log(req.headers.origin);
   next();
 });
 app.use(cors(corseSEtup));
