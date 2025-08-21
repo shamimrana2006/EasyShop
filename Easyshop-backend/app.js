@@ -42,10 +42,10 @@ app.use(
     customSiteTitle: "EasyShop API Docs",
   })
 );
-// app.use(
-//   "/swagger-ui",
-//   express.static(path.dirname(require.resolve("swagger-ui-dist")))
-// );
+app.use(
+  "/swagger-ui",
+  express.static(path.dirname(require.resolve("swagger-ui-dist")))
+);
 
 app.use((req, res, next) => {
   console.log("API request URL:", req.originalUrl);
