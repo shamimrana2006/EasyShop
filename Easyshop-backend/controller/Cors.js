@@ -1,25 +1,25 @@
 require("dotenv").config();
-const origins = [process.env.origin1, process.env.origin2, process.env.URL];
-const CORS_LOCAL = process.env.CORS_LOCAL;
+
+const allowedOrigins = [
+  process.env.ORIGIN1,
+  process.env.ORIGIN2,
+  process.env.URL,
+].filter(Boolean); // remove undefined or empty
 
 const corseSEtup = {
   origin: (origin, callback) => {
+    console.log("🌍 Incoming request origin:", origin); // 👈 লগ হবে সবসময়
+
     if (!origin) {
-      return callback(null, true);
+      return callback(null, true); // allow server-to-server / Postman
     }
 
-    if (!CORS_LOCAL) {
-      return callback(null, true);
-    }
-
-    ////(origins, origin);
-    if (origins.includes(origin)) {
+    if (allowedOrigins.includes(origin.trim())) {
+      console.log("✅ Allowed by CORS:", origin);
       return callback(null, true);
     } else {
-      ////(origins, origin);
-      console.log("x cors bloocked:", origin);
-
-      callback(new Error("origin not accepted by cors"));
+      console.log("❌ Blocked by CORS:", origin);
+      return callback(new Error("Not allowed by CORS"));
     }
   },
   credentials: true,
