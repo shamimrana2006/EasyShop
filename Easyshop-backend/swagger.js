@@ -5,7 +5,7 @@ const doc = {
     title: "EasyShop API",
     description: "User Management API",
   },
-  host: "https://easy-shop-backend-mocha.vercel.app",
+  host: "easy-shop-backend-mocha.vercel.app",
   schemes: ["https"],
 };
 
