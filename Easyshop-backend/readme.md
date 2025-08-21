@@ -64,6 +64,7 @@ _https://easy-shop-backend-mocha.vercel.app_
   - **import / ES6** // when you use import then use export only but when you use require then use must be module.export
   - **schema email candidate key** // must be use sparse: true because it ignore duplicate error for several time save empty email
   - **use validator middleware** // because ifelse create huge ugly code
+  - **swagger error** // first install swagger-ui-express and swagger-autogen then create a file in root directory "swagger.js"
 
 ### .ENV file setup :
 

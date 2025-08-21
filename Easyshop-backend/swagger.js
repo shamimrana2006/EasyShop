@@ -14,3 +14,5 @@ const endpointsFiles = ["./app.js"];
 
 // Generate swagger doc
 swaggerAutogen(outputFile, endpointsFiles, doc);
+
+

@@ -21,10 +21,10 @@ const app = express();
 
 app.enable("trust proxy");
 modngoDBconnection();
-app.use((req, res, next) => {
-  console.log(req.headers.origin);
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log(req.headers.origin);
+//   next();
+// });
 app.use(cors(corseSEtup));
 app.use(cookieParser());
 app.use(express.json());
@@ -42,10 +42,10 @@ app.use(
     customSiteTitle: "EasyShop API Docs",
   })
 );
-app.use(
-  "/swagger-ui",
-  express.static(path.dirname(require.resolve("swagger-ui-dist")))
-);
+// app.use(
+//   "/swagger-ui",
+//   express.static(path.dirname(require.resolve("swagger-ui-dist")))
+// );
 
 app.use((req, res, next) => {
   console.log("API request URL:", req.originalUrl);
