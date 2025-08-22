@@ -167,7 +167,7 @@
       }
     },
     "/join/verify-account-otp": {
-      "get": {
+      "post": {
         "description": "",
         "parameters": [
           {
