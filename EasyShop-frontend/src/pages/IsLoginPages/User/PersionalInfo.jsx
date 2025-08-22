@@ -33,6 +33,18 @@ export default function PersionalInfo() {
               <span>Name</span>
               <span className="flex justify-between">{user?.name}</span>
             </div>
+            <div className="flex gap-3">
+              <span>E-mail</span>
+              <span className="flex justify-between">{user?.email}</span>
+            </div>
+            <div className="flex gap-3">
+              <span>Role</span>
+              <span className="flex justify-between">{user?.isAdmin ? user?.isAdmin : "User"}</span>
+            </div>
+            <div className="flex gap-3">
+              <span>Name</span>
+              <span className="flex justify-between">{user?.name}</span>
+            </div>
           </div>
         </div>
       </div>

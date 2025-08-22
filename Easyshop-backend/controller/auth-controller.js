@@ -199,6 +199,17 @@ const otp_sender_verify = async (req, res) => {
         message: "user Email required",
       });
     }
+
+    const userFinding = await Users_collection.findOne({ email });
+    const emailAlreadyUsed = userFinding?.isVerified?.value;
+
+    if (emailAlreadyUsed) {
+      return error_res(res, {
+        status_code: 404,
+        message: "email already verified in another account",
+      });
+    }
+
     const responseOPTSERvice = await OTP_Service(email, "verify account OTP");
     return success_res(res, {
       status_code: 200,

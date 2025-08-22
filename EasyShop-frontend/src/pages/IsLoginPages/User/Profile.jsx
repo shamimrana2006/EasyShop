@@ -56,7 +56,7 @@ const Profile = () => {
 
               // এখানে otp verify API কল করবে
               console.log("OTP submitted:", otp);
-              const otpCheckPromise = dispatch(CheckOTPThunk({ email,otp })).unwrap();
+              const otpCheckPromise = dispatch(CheckOTPThunk({ email, otp })).unwrap();
 
               await toast.promise(otpCheckPromise, {
                 pending: "Checking..",
@@ -102,15 +102,39 @@ const Profile = () => {
           </span>
         )}
 
-        <div className="grid w-full  gap-4 grid-cols-1 md:grid-cols-2">
-          <div className="border border-border rounded p-3">
-            <h1 className="text-2xl mb-6">Congratulation {name}</h1>
-            <span>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Repellat, ipsam! Inventore commodi reprehenderit vel. Alias impedit consectetur nisi a in! In, ullam magnam voluptatem dignissimos commodi ipsam nesciunt optio ea doloremque necessitatibus ex vero, dolor error. Recusandae consequatur unde assumenda, dolorem aliquam cumque, ducimus vero voluptatibus voluptas doloribus sit ea?</span>
+        <div className="grid max-w-[840px]  gap-6 grid-cols-1 md:grid-cols-2">
+          <div className="border grid border-border rounded p-3">
+            <div className="grid grid-cols-12">
+              <div className="col-span-12">
+                <h1 className="text-2xl mb-6">Your Privacy Control</h1>
+                <div className="pb-4">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Repellat, ipsam! Inventore commodi reprehenderit vel. Alias impedit consectetur nisi a in! In, ullam magnam sit ea?</div>
+              </div>
+              <div></div>
+            </div>
+            <div className="border-t border-border cursor-pointer text-primary p-3">Manage your data & privacy</div>
           </div>
-          <div className="border rounded p-3 border-border">
-            <h1 className="text-2xl mb-6">Congratulation {name}</h1>
-            <span>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum dicta minima eligendi! Perspiciatis, fugit aliquid.</span>
+          <div className="border grid border-border rounded p-3">
+            <div className="grid grid-cols-12">
+              <div className="col-span-12">
+                <h1 className="text-2xl  mb-6">Your Account is protected</h1>
+                <div className="pb-4">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Repellat, ipsam! Inventore commodi reprehenderit vel. Alias impedit consectetur nisi a in! In, ullam magnam sit ea?</div>
+              </div>
+              <div></div>
+            </div>
+            <div className="border-t border-border cursor-pointer text-primary p-3">Manage your data & privacy</div>
           </div>
+          <div className="border grid border-border col-span-2 rounded p-3">
+            <div className="grid grid-cols-12">
+              <div className="col-span-12">
+                <h1 className="text-2xl mb-6">Your Privacy Control</h1>
+                <div className="pb-4">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Repellat, ipsam! Inventore commodi reprehenderit vel. Alias impedit consectetur nisi a in! In, ullam magnam sit ea?</div>
+              </div>
+              <div></div>
+            </div>
+            <div className="border-t border-border cursor-pointer text-primary p-3">Manage your data & privacy</div>
+          </div>
+         
+         
         </div>
       </div>
     </div>
