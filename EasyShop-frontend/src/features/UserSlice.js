@@ -72,6 +72,7 @@ export const resetPassSave = createAsyncThunk("user/resetPassSave", async ({ pas
   }
 });
 
+
 const UserSlice = createSlice({
   name: "user",
   initialState: {
@@ -88,7 +89,7 @@ const UserSlice = createSlice({
       state.loading = false;
     },
     resetstate: (state) => {
-      (state.user = null), (state.loading = false), (state.error = null);
+      ((state.user = null), (state.loading = false), (state.error = null));
     },
   },
   extraReducers: (builder) => {

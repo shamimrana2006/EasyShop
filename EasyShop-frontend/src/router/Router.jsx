@@ -15,6 +15,7 @@ import { ToastContainer } from "react-toastify";
 import ForgotPasswordOTP from "../pages/authPage/ForgotPasswordOTP";
 import NewPass from "../pages/authPage/NewPass";
 import PersionalInfo from "../pages/IsLoginPages/User/PersionalInfo";
+import ActivationOTP from "../pages/authPage/ActivationOTP";
 
 const Router_Custom = () => {
   const location = useLocation();
@@ -33,6 +34,7 @@ const Router_Custom = () => {
                     </PrivetRout>
                   }>
                   <Route index element={<Profile />}></Route>
+                  <Route path="active_with_otp" element={<ActivationOTP />}></Route>
                   <Route path="persionalInfo" element={<PersionalInfo/>}></Route>
                   <Route path="security" element="shamim"></Route>
                   <Route path="*" element={<NotFound></NotFound>}></Route>

@@ -29,7 +29,7 @@ userManagement_router.get("/logout", Check_user_log, LogoutAT);
 userManagement_router.post("/login", login_controller);
 userManagement_router.get("/resetDB", reset_db_controller);
 userManagement_router.get("/profile", Check_user_log, profile_controller);
-userManagement_router.get(
+userManagement_router.post(
   "/verify-account-otp",
   Check_user_log,
   otp_sender_verify

@@ -192,17 +192,14 @@ const otp_sender_verify = async (req, res) => {
         },
       });
     }
-
-    if (!UserDAta?.email) {
+    const { email } = req?.body || {};
+    if (!email) {
       return error_res(res, {
         status_code: 400,
         message: "user Email required",
       });
     }
-    const responseOPTSERvice = await OTP_Service(
-      UserDAta?.email,
-      "verify account OTP"
-    );
+    const responseOPTSERvice = await OTP_Service(email, "verify account OTP");
     return success_res(res, {
       status_code: 200,
       message: responseOPTSERvice,

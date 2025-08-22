@@ -11,7 +11,7 @@ import Loading from "../../Layout/Loading";
 import { resetOTPTOKenCreate, resetPassOTP, resetstate, userFetch } from "../../features/UserSlice";
 import { toast } from "react-toastify";
 
-const ForgotPasswordOTP = () => {
+const ActivationOTP = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -24,13 +24,13 @@ const ForgotPasswordOTP = () => {
   console.log(user);
 
   const email = localStorage.getItem("ResetPassEmail");
-  useEffect(() => {
-    if (user.user && !user.loading) {
-      navigate("/");
-    } else {
-      dispatch(resetstate());
-    }
-  }, [user.user]);
+  // useEffect(() => {
+  //   if (user.user && !user.loading) {
+  //     navigate("/");
+  //   } else {
+  //     dispatch(resetstate());
+  //   }
+  // }, [user.user]);
 
   const resentOTP = async () => {
     const result = dispatch(resetPassOTP({ email })).unwrap();
@@ -49,23 +49,23 @@ const ForgotPasswordOTP = () => {
   const CheckOTP = async (e) => {
     e.preventDefault();
 
-    const otp = OTPREf.current.value;
-    const result = dispatch(resetOTPTOKenCreate({ email, otp })).unwrap();
+    // const otp = OTPREf.current.value;
+    // const result = dispatch(resetOTPTOKenCreate({ email, otp })).unwrap();
 
-    toast.promise(result, {
-      pending: "otp checking...",
-      success: {
-        render() {
-          navigate("/auth/resetPass");
-          return "You can change your password validity in 5 minute";
-        },
-      },
-      error: {
-        render({ data }) {
-          return data || data?.message || "something went wrong";
-        },
-      },
-    });
+    // toast.promise(result, {
+    //   pending: "otp checking...",
+    //   success: {
+    //     render() {
+    //       navigate("/auth/resetPass");
+    //       return "You can change your password validity in 5 minute";
+    //     },
+    //   },
+    //   error: {
+    //     render({ data }) {
+    //       return data || data?.message || "something went wrong";
+    //     },
+    //   },
+    // });
   };
 
   if (user.loading) {
@@ -97,12 +97,7 @@ const ForgotPasswordOTP = () => {
                 </span>
                 <span className="text-danger">{user?.error ? (user?.error?.payload?.message ? "" : user?.error?.payload) : ""}</span>
                 <button className="btn btn-sm mt-4">Verify OTP</button>
-                <span className=" mt-4">
-                  Login with Password{" "}
-                  <Link className={"text-primary"} to={"/auth/login"}>
-                    Password
-                  </Link>
-                </span>
+              
               </div>
             </form>
           </div>
@@ -119,4 +114,4 @@ const ForgotPasswordOTP = () => {
   );
 };
 
-export default ForgotPasswordOTP;
+export default ActivationOTP;

@@ -1,15 +1,87 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import Loading from "../../../Layout/Loading";
+import Swal from "sweetalert2";
+import { resetPassOTP } from "../../../features/UserSlice";
+import { toast } from "react-toastify";
+import { CheckOTPThunk, veridicationOTPsender } from "../../../features/verification";
 
 const Profile = () => {
   const navigate = useNavigate();
   const userState = useSelector((state) => state.userStore);
+  const dispatch = useDispatch();
   if (userState.loading) {
     return <Loading />;
   }
   const { name, UserName, email } = userState?.user?.payLoad || {};
   const isVarified = userState?.user?.payLoad?.isVerified?.value;
+
+  //email otp sending for user activation
+  const ActivationOTP = async () => {
+    Swal.fire({
+      title: "Enter your email",
+      input: "email",
+      inputValue: `${email}`, // default email দেখাবে
+      inputPlaceholder: "Enter your email address",
+      showCancelButton: true,
+      confirmButtonText: "Submit",
+    }).then(async (result) => {
+      if (result.isConfirmed && result.value) {
+        const email = result?.value;
+
+        try {
+          // OTP send করার promise
+          const otpPromise = dispatch(veridicationOTPsender({ email })).unwrap();
+
+          await toast.promise(otpPromise, {
+            pending: "Sending OTP...",
+            success: "OTP sent successfully!",
+            error: {
+              render({ data }) {
+                return data?.message || "Something went wrong while sending OTP";
+              },
+            },
+          });
+
+          // ✅ OTP Swal শুধু একবারই ওপেন হবে
+          Swal.fire({
+            title: "Enter OTP",
+            input: "text",
+            inputPlaceholder: "Enter the OTP sent to your email",
+            showCancelButton: true,
+            confirmButtonText: "Verify",
+          }).then(async (otpResult) => {
+            if (otpResult.isConfirmed && otpResult.value) {
+              const otp = otpResult.value;
+
+              // এখানে otp verify API কল করবে
+              console.log("OTP submitted:", otp);
+              const otpCheckPromise = dispatch(CheckOTPThunk({ email,otp })).unwrap();
+
+              await toast.promise(otpCheckPromise, {
+                pending: "Checking..",
+                success: "Account verifying successfully!",
+                error: {
+                  render({ data }) {
+                    return data?.message || "Something went wrong while sending OTP";
+                  },
+                },
+              });
+
+              Swal.fire({
+                icon: "success",
+                title: "Verified!",
+                text: "Your email has been successfully verified.",
+              });
+            }
+          });
+        } catch (error) {
+          console.error("OTP sending failed:", error);
+        }
+      }
+    });
+  };
+
   return (
     <div>
       <div className="flex items-center gap-4 flex-col justify-center">
@@ -23,7 +95,10 @@ const Profile = () => {
           </span>
         ) : (
           <span className="text-center">
-          Your account successfully created but not verifyed please send with eamail verification and  <span className="text-primary underline hover:no-underline cursor-pointer">Activate now</span>
+            Your account successfully created but not verifyed please send with eamail verification and{" "}
+            <span onClick={ActivationOTP} className="text-primary underline hover:no-underline cursor-pointer">
+              Activate now
+            </span>
           </span>
         )}
 

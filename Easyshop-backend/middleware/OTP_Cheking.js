@@ -6,7 +6,7 @@ const otp_Checking = async (req, res, next) => {
   try {
     // const email = req.body?.email
     // const otp = req.body?.otp
-    const { email, otp } = req?.body;
+    const { email, otp } = req?.body || {};
 
     if (!email) {
       return error_res(res, { status_code: 400, message: "email required" });
@@ -21,6 +21,8 @@ const otp_Checking = async (req, res, next) => {
     const { UserName, Otp } = user;
     const { value, CreateAT } = Otp;
     const isValidOTP = await bcrypt.compare(otp, value);
+    console.log(isValidOTP, value, "amarder inbox");
+
     if (!isValidOTP) {
       return error_res(res, { status_code: 400, message: "invalid OTP" });
     }
