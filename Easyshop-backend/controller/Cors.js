@@ -1,8 +1,10 @@
 require("dotenv").config();
 
 const allowedOrigins = [
-  process.env.ORIGIN1,
-  process.env.ORIGIN2,
+  process.env.origin1,
+  process.env.origin2,
+  process.env.origin3,
+  process.env.origin4,
   process.env.URL,
 ].filter(Boolean); // remove undefined or empty
 

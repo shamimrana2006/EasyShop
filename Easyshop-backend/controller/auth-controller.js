@@ -216,6 +216,7 @@ const otp_sender_verify = async (req, res) => {
 const verificationUpdating = async (req, res) => {
   try {
     const { UserName } = req.user.toObject();
+    const email = req.email;
     if (!req.isValidOTP) {
       error_res(res, {
         status_code: 401,
@@ -225,7 +226,7 @@ const verificationUpdating = async (req, res) => {
 
     await Users_collection.findOneAndUpdate(
       { UserName },
-      { "isVerified.value": true }
+      { "isVerified.value": true, email }
     );
     success_res(res, {
       status_code: 201,
@@ -250,7 +251,7 @@ const CheckAdmin = async (req, res, next) => {
 //reset pass otp geting
 const reset_password_otp = async (req, res) => {
   try {
-    const email = req.body?.email;
+    const { email } = req.body;
     ////(req.body);
 
     if (!email) {
@@ -335,14 +336,13 @@ const token_checkFor_resetPass = async (req, res) => {
       });
     }
 
-
     if (!(password == confirm_password)) {
       error_res(res, { status_code: 400, message: "password not match" });
     }
 
     const HashPassword = await CreateHashText(password);
-    console.log("hashpassword=========",HashPassword);
-    
+    console.log("hashpassword=========", HashPassword);
+
     res.clearCookie("resetPassToken", {
       httpOnly: isSecure,
       secure: isSecure,

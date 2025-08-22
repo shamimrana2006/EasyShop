@@ -5,10 +5,10 @@
     "description": "User Management API",
     "version": "1.0.0"
   },
-  "host": "easy-shop-backend-mocha.vercel.app",
+  "host": "localhost:2006",
   "basePath": "/",
   "schemes": [
-    "https"
+    "http"
   ],
   "paths": {
     "/": {
@@ -208,6 +208,18 @@
             "name": "origin",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {

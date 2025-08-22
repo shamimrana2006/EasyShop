@@ -51,6 +51,7 @@ _https://easy-shop-backend-mocha.vercel.app_
 ### problems && setup guided backend
 
 - initial setup
+
   - app.enable("trust proxy"); // for vercel https enable
   - modngoDBconnection(); // not middleware only function call
   - app.use(cors(corseSEtup)); // cors setup
@@ -64,7 +65,15 @@ _https://easy-shop-backend-mocha.vercel.app_
   - **import / ES6** // when you use import then use export only but when you use require then use must be module.export
   - **schema email candidate key** // must be use sparse: true because it ignore duplicate error for several time save empty email
   - **use validator middleware** // because ifelse create huge ugly code
-  - **swagger error** // first install swagger-ui-express and swagger-autogen then create a file in root directory "swagger.js"
+  - **swagger error** // first install swagger-ui-express and swagger-autogen then create a file in root directory "swagger.js" setup following the documentation npm swagger ui express and follow app.js like this `  app.use((req, res, next) => {
+  console.log("API request URL:", req.originalUrl);
+  console.log("API request from:", req.headers.origin);
+  next();
+});
+app.get("/", (req, res) => {
+  res.send("our server its working now ....");
+});
+ `
 
 ### .ENV file setup :
 

@@ -35,6 +35,7 @@
   --color-secondary: #c0c9ff;
   --color-ptext: #9b9b9b;
   --color-danger: #ff2929;
+  --color-success: #0eff36;
   --color-border: #dddddd80;
 }
 
@@ -77,6 +78,7 @@ button {
 
 @theme {
   --color-danger: var(--color-danger);
+  --color-success: var(--color-success);
   --color-pbox: var(--color-pbox);
   --color-bg: var(--color-bg);
   --color-text: var(--color-text);

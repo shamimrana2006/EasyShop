@@ -4,11 +4,10 @@ const bcrypt = require("bcryptjs");
 
 const otp_Checking = async (req, res, next) => {
   try {
-    const email = req.body?.email
-    const otp = req.body?.otp
-    ////(email,otp);
-    
-    
+    // const email = req.body?.email
+    // const otp = req.body?.otp
+    const { email, otp } = req?.body;
+
     if (!email) {
       return error_res(res, { status_code: 400, message: "email required" });
     }
@@ -30,6 +29,7 @@ const otp_Checking = async (req, res, next) => {
       return error_res(res, { status_code: 404, message: "otp Expired" });
     }
     req.user = user;
+    req.email = email;
     req.isValidOTP = true;
     next();
   } catch (error) {

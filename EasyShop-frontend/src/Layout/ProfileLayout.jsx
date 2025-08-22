@@ -7,7 +7,7 @@ import "./profileCss.css";
 const ProfileLayout = () => {
   const navItems = [
     { name: "Home", path: "/user/profile" },
-    { name: "Personal Info", path: "/user/profile/personal_info" },
+    { name: "Personal Info", path: "/user/profile/persionalInfo" },
     { name: "Security", path: "/user/profile/security" },
     { name: "Version", path: "/user/profile/Version" },
   ];
