@@ -86,7 +86,7 @@ const Profile = () => {
     <div>
       <div className="flex items-center gap-4 flex-col justify-center">
         <div className={`rounded-full overflow-hidden p-1 w-24 h-24 flex items-center justify-center ${isVarified ? "border-green-500" : "border-yellow-300"} border-2 `}>
-          <img className="rounded-full w-full h-full" src={"https://photosbulk.com/wp-content/uploads/instagram-profile-picture-for-girls-aesthetic_28.webp"} alt="" />
+          <img className="rounded-full w-full h-full" src={"httpinstagram-profile-picture-for-girls-aesthetic_28.webp"} alt="" />
         </div>
         <span>Welcome ,{name}</span>
         {isVarified ? (
@@ -123,7 +123,7 @@ const Profile = () => {
             </div>
             <div className="border-t border-border cursor-pointer text-primary p-3">Manage your data & privacy</div>
           </div>
-          <div className="border grid border-border col-span-2 rounded p-3">
+          <div className="border grid border-border md:col-span-2 col-span-1 rounded p-3">
             <div className="grid grid-cols-12">
               <div className="col-span-12">
                 <h1 className="text-2xl mb-6">Your Privacy Control</h1>
