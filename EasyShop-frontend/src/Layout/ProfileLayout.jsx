@@ -6,7 +6,7 @@ import { Link, NavLink, Outlet } from "react-router";
 import "./profileCss.css";
 const ProfileLayout = () => {
   const navItems = [
-    { name: "Home", path: "/user/profile" },
+    { name: "Home", path: "." },
     { name: "Personal Info", path: "/user/profile/persionalInfo" },
     { name: "Security", path: "/user/profile/security" },
     { name: "Version", path: "/user/profile/Version" },
@@ -17,7 +17,7 @@ const ProfileLayout = () => {
         <div className="flex-col profileNave justify-center ">
           {navItems.map((item, index) => {
             return (
-              <NavLink key={index} to={item.path} className={`p-2 text-text rounded-br-2xl text-black flex items-center gap-2  rounded-tr-2xl `}>
+              <NavLink key={index} to={item.path} end className={({ isActive }) => `p-2 text-text rounded-br-2xl flex items-center gap-2 rounded-tr-2xl ${isActive ? "text-primary" : "text-black"}`}>
                 {item.name}
               </NavLink>
             );

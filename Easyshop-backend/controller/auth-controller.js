@@ -180,7 +180,7 @@ const LogoutAT = async (req, res) => {
 //account verifying opt
 const otp_sender_verify = async (req, res) => {
   try {
-    const { password, ...UserDAta } = req.user.toObject();
+    const { password, ...UserDAta } = req?.user.toObject();
     if (UserDAta?.isVerified?.value) {
       ////(typeof UserDAta?.isVerified?.value);
 

@@ -14,6 +14,8 @@ const Profile = () => {
     return <Loading />;
   }
   const { name, UserName, email } = userState?.user?.payLoad || {};
+  console.log("ami user :::", UserName);
+
   const isVarified = userState?.user?.payLoad?.isVerified?.value;
 
   //email otp sending for user activation
@@ -31,7 +33,9 @@ const Profile = () => {
 
         try {
           // OTP send করার promise
-          const otpPromise = dispatch(veridicationOTPsender({ email })).unwrap();
+          console.log("tumio paicho amake", UserName);
+          
+          const otpPromise = dispatch(veridicationOTPsender({ email, UserName })).unwrap();
 
           await toast.promise(otpPromise, {
             pending: "Sending OTP...",
@@ -133,8 +137,6 @@ const Profile = () => {
             </div>
             <div className="border-t border-border cursor-pointer text-primary p-3">Manage your data & privacy</div>
           </div>
-         
-         
         </div>
       </div>
     </div>
