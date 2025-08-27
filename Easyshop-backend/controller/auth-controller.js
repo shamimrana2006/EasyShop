@@ -181,6 +181,7 @@ const LogoutAT = async (req, res) => {
 const otp_sender_verify = async (req, res) => {
   try {
     const { password, ...UserDAta } = req?.user.toObject();
+    const { UserName } = UserDAta;
     if (UserDAta?.isVerified?.value) {
       ////(typeof UserDAta?.isVerified?.value);
 
@@ -193,6 +194,12 @@ const otp_sender_verify = async (req, res) => {
       });
     }
     const { email } = req?.body || {};
+    if (!UserName) {
+      return error_res(res, {
+        status_code: 400,
+        message: "User Not found",
+      });
+    }
     if (!email) {
       return error_res(res, {
         status_code: 400,
@@ -210,7 +217,10 @@ const otp_sender_verify = async (req, res) => {
       });
     }
 
-    const responseOPTSERvice = await OTP_Service(email, "verify account OTP");
+    const responseOPTSERvice = await OTP_Service(
+      { email, UserName },
+      "verify account OTP"
+    );
     return success_res(res, {
       status_code: 200,
       message: responseOPTSERvice,

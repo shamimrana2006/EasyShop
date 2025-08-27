@@ -4,18 +4,18 @@ import { axiosUserInstance } from "../services/UserAPIcall";
 export const veridicationOTPsender = createAsyncThunk("user/verification", async ({ email, UserName }, { rejectWithValue }) => {
   try {
     const res = await axiosUserInstance.post("/join/verify-account-otp", { email, UserName });
-   
-        console.log("user slice o amake peyeche", UserName);
-        
+
+    console.log("user slice o amake peyeche", UserName);
+
     return res.data;
   } catch (error) {
     console.log(error);
     return rejectWithValue(error?.response?.data || "something went wrong");
   }
 });
-export const CheckOTPThunk = createAsyncThunk("user/verificationOTP", async ({ email, otp }, { rejectWithValue }) => {
+export const CheckOTPThunk = createAsyncThunk("user/verificationOTP", async ({ email, otp, UserName }, { rejectWithValue }) => {
   try {
-    const res = await axiosUserInstance.post("/join/verify-account", { email, otp });
+    const res = await axiosUserInstance.post("/join/verify-account", { email, otp, UserName });
     console.log(res);
     return res.data;
   } catch (error) {

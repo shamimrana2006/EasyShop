@@ -76,17 +76,17 @@ const OTPHTML = (OTP) => {
 `;
 };
 
-const OTP_Service = async (email, reason) => {
+const OTP_Service = async ({ email, UserName }, reason) => {
   try {
-   
-
+    console.log(UserName,"ustad ami username paichi email otp te");
+    
     const OTP = await otpCreator();
-   
+
     const body = OTPHTML(OTP);
     const OTPHash = await CreateHashText(OTP);
 
     await Users_collection.findOneAndUpdate(
-      { email },
+      { UserName },
       { "Otp.value": OTPHash, "Otp.CreateAT": Date.now() + 5 * 60 * 1000 }
     );
     await SendMail(email, reason, body);

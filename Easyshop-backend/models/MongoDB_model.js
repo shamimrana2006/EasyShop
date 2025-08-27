@@ -32,6 +32,18 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  gender: {
+    type: String,
+    default: "Male",
+  },
+  dateOfBirth: {
+    type: Date,
+    default: function () {
+      const now = new Date();
+      now.setFullYear(now.getFullYear() - 18);
+      return now;
+    },
+  },
   isAdmin: {
     type: Boolean,
     default: false,

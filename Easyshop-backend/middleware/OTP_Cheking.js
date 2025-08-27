@@ -7,7 +7,7 @@ const otp_Checking = async (req, res, next) => {
     // const email = req.body?.email
     // const otp = req.body?.otp
     const { email, UserName, otp } = req?.body || {};
-
+    console.log("sahmim eita body::", req.body);
 
     if (!email) {
       return error_res(res, { status_code: 400, message: "email required" });
@@ -15,20 +15,19 @@ const otp_Checking = async (req, res, next) => {
     if (!otp) {
       return error_res(res, { status_code: 400, message: "otp required" });
     }
-    const user = await Users_collection.findOne(
-      { UserName },
-      { password: 0 }
-    );
+    const user = await Users_collection.findOne({ UserName }, { password: 0 });
+    console.log(user,"user.............");
+    
     if (!user) {
       return error_res(res, {
         status_code: 404,
         message: `user not found with this user: ${UserName}`,
       });
     }
-    const {  Otp } = user;
+    const { Otp } = user;
     const { value, CreateAT } = Otp;
-    const isValidOTP = await bcrypt.compare(otp, value);
-    console.log(isValidOTP, value, "amarder inbox");
+    const isValidOTP = await bcrypt.compare(otp, Otp.value);
+    console.log(isValidOTP, value,otp,user, "amarder inbox");
 
     if (!isValidOTP) {
       return error_res(res, { status_code: 400, message: "invalid OTP" });

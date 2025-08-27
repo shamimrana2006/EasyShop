@@ -19,31 +19,27 @@ export default function PersionalInfo() {
           </span>
         </div>
 
-        <div>
-          <div className=" text- border p-3 rounded">
-            <div className="flex gap-3 items-center">
-              <span>Profile picture</span>
-              <div className="flex justify-between items-center">
-                <span> A profile picture helps personalize your account</span>
-                <div className="rounded-full w-8 h-8 bg-primary flex text-center justify-center items-center uppercase cursor-pointer">s</div>
+        <div className="flex flex-col mt-2">
+          <div className="border border-border p-2 rounded">
+            {/* //single column */}
+            <div className=" p-2 grid grid-cols-12">
+              <div className="col-span-4 md:col-span-2 overflow-auto">Profile </div>
+              <div className="col-span-8 md:col-span-10 grid grid-cols-12 overflow-auto">
+                <div className="col-span-10">A Profile photo add your personalize</div>
+                <div className="w-10 h-10 rounded-full bg-primary"></div>
               </div>
             </div>
-            <hr />
-            <div className="flex gap-3">
-              <span>Name</span>
-              <span className="flex justify-between">{user?.name}</span>
+            <div className=" p-2 border-t border-border grid grid-cols-12">
+              <div className="col-span-4 md:col-span-2 overflow-auto">Name </div>
+              <div className="col-span-8 md:col-span-10 overflow-auto">{user?.name}</div>
             </div>
-            <div className="flex gap-3">
-              <span>E-mail</span>
-              <span className="flex justify-between">{user?.email}</span>
+            <div className="border-t border-border p-2 grid grid-cols-12">
+              <div className="col-span-4 md:col-span-2 overflow-auto">Date of birth </div>
+              <div className="col-span-8 md:col-span-10 overflow-auto">{Date(user?.dateOfBirth)}</div>
             </div>
-            <div className="flex gap-3">
-              <span>Role</span>
-              <span className="flex justify-between">{user?.isAdmin ? user?.isAdmin : "User"}</span>
-            </div>
-            <div className="flex gap-3">
-              <span>Name</span>
-              <span className="flex justify-between">{user?.name}</span>
+            <div className="border-t border-border p-2 grid grid-cols-12">
+              <div className="col-span-4 md:col-span-2 overflow-auto">Gender </div>
+              <div className="col-span-8 md:col-span-10 overflow-auto">{user?.gender}</div>
             </div>
           </div>
         </div>
