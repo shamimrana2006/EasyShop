@@ -50,7 +50,7 @@ const ForgotPasswordOTP = () => {
     e.preventDefault();
 
     const otp = OTPREf.current.value;
-    const result = dispatch(resetOTPTOKenCreate({ email, otp })).unwrap();
+    const result = dispatch(resetOTPTOKenCreate({ email, otp, resetpass: true })).unwrap();
 
     toast.promise(result, {
       pending: "otp checking...",

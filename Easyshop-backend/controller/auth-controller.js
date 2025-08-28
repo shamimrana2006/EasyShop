@@ -283,7 +283,10 @@ const reset_password_otp = async (req, res) => {
       return error_res(res, { status_code: 400, message: "user not found" });
     }
 
-    const responseOTP = await OTP_Service(email, "Reset Password OTP");
+    const responseOTP = await OTP_Service(
+      { email, UserName: user?.UserName },
+      "Reset Password OTP"
+    );
     return success_res(res, {
       status_code: 200,
       message: responseOTP,

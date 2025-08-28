@@ -52,9 +52,9 @@ export const resetPassOTP = createAsyncThunk("user/resetPassOTP", async ({ email
     return rejectWithValue(error);
   }
 });
-export const resetOTPTOKenCreate = createAsyncThunk("user/OTPTokenCreate", async ({ email, otp }, { rejectWithValue }) => {
+export const resetOTPTOKenCreate = createAsyncThunk("user/OTPTokenCreate", async ({ email, otp, resetpass }, { rejectWithValue }) => {
   try {
-    const res = await axiosUserInstance.post("/join/reset_password_otp_token", { email, otp });
+    const res = await axiosUserInstance.post("/join/reset_password_otp_token", { email, otp, resetpass });
     return res.data;
   } catch (error) {
     console.log(error);
@@ -71,7 +71,6 @@ export const resetPassSave = createAsyncThunk("user/resetPassSave", async ({ pas
     return rejectWithValue(error?.response?.data || "something went wrong");
   }
 });
-
 
 const UserSlice = createSlice({
   name: "user",

@@ -23,6 +23,7 @@ const SendMail = async (sender_mail, subject, body) => {
     .then((info) => {
       ////("Message sent: %s", info.messageId);
       ////("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+      console.log(sender_mail)
       return info.messageId;
     })
     .catch((err) => {

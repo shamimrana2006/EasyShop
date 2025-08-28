@@ -33,7 +33,7 @@ const ActivationOTP = () => {
   // }, [user.user]);
 
   const resentOTP = async () => {
-    const result = dispatch(resetPassOTP({ email })).unwrap();
+    const result = dispatch(resetPassOTP({ email})).unwrap();
 
     toast.promise(result, {
       pending: "otp resending...",
@@ -97,7 +97,6 @@ const ActivationOTP = () => {
                 </span>
                 <span className="text-danger">{user?.error ? (user?.error?.payload?.message ? "" : user?.error?.payload) : ""}</span>
                 <button className="btn btn-sm mt-4">Verify OTP</button>
-              
               </div>
             </form>
           </div>

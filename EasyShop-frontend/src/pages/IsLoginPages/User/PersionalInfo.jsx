@@ -19,7 +19,8 @@ export default function PersionalInfo() {
           </span>
         </div>
 
-        <div className="flex flex-col mt-2">
+       <div className="flex justify-center  items-center w-full b">
+         <div className="flex lg:min-w-[1000px]  flex-col mt-2">
           <div className="border border-border p-2 rounded">
             {/* //single column */}
             <div className=" p-2 grid grid-cols-12">
@@ -43,6 +44,7 @@ export default function PersionalInfo() {
             </div>
           </div>
         </div>
+       </div>
       </div>
     </div>
   );
