@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { axiosUserInstance } from "../services/UserAPIcall";
+import { userDAtaProfile } from "./UserSlice";
 
 export const veridicationOTPsender = createAsyncThunk("user/verification", async ({ email, UserName }, { rejectWithValue }) => {
   try {
@@ -13,10 +14,13 @@ export const veridicationOTPsender = createAsyncThunk("user/verification", async
     return rejectWithValue(error?.response?.data || "something went wrong");
   }
 });
-export const CheckOTPThunk = createAsyncThunk("user/verificationOTP", async ({ email, otp, UserName }, { rejectWithValue }) => {
+export const CheckOTPThunk = createAsyncThunk("user/verificationOTP", async ({ email, otp, UserName }, { rejectWithValue,dispatch }) => {
   try {
     const res = await axiosUserInstance.post("/join/verify-account", { email, otp, UserName });
     console.log(res);
+    
+    
+    dispatch(userDAtaProfile())
     return res.data;
   } catch (error) {
     console.log(error);

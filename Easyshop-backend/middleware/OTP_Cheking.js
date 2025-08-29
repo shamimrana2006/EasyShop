@@ -10,9 +10,8 @@ const otp_Checking = async (req, res, next) => {
     const { email, UserName, otp, resetpass } = req?.body || {};
     console.log("sahmim eita body::", req.body);
 
-    if (!email) {
-      return error_res(res, { status_code: 400, message: "email required" });
-    }
+      // return error_res(res, { status_code: 400, message: "email required" });
+    
     if (!otp) {
       return error_res(res, { status_code: 400, message: "otp required" });
     }
