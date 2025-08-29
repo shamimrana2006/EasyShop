@@ -1,4 +1,3 @@
-const { Flatware } = require("@mui/icons-material");
 const { Users_collection } = require("../models/MongoDB_model");
 const { error_res } = require("../services/respons_service");
 const bcrypt = require("bcryptjs");
@@ -10,11 +9,13 @@ const otp_Checking = async (req, res, next) => {
     const { email, UserName, otp, resetpass } = req?.body || {};
     console.log("sahmim eita body::", req.body);
 
-      // return error_res(res, { status_code: 400, message: "email required" });
-    
+    // return error_res(res, { status_code: 400, message: "email required" });
+
     if (!otp) {
       return error_res(res, { status_code: 400, message: "otp required" });
     }
+    //    const user = await Users_collection.findOne({ UserName }, { password: 0 });
+    // console.log(user,"user.............");
     let user = false;
     if (resetpass) {
       user = await Users_collection.findOne({ email }, { password: 0 });
