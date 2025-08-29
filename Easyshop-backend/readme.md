@@ -8,31 +8,9 @@ _http://localhost:port_
 
 _https://easy-shop-backend-mocha.vercel.app_
 
-- /join
-  - **/theme-toggle**
-    - (get)// just logged in
-  - **/registration**
-    - (post)// UserName,name,password,repassword (UserName=email/text)
-  - **/login**
-    - (post)// UserName,password
-  - **/resetDB**
-    - (get)// reset mongoDB
-  - **/profile**
-    - (get)// get data when logged in
-  - **/verify-account-otp**
-    - (get) // logged in
-  - **/verify-account**
-    - (post) // email,otp
-  - **/reset-pass-otp**
-    - (post) // email
-  - **/reset-password**
-    - (post) // email,otp ,NewPassword,ConfirmPassword
-  - **/logout**
-    - (get) // with credential must
-- /user
-- /admin
-- /product
-- /seller
+# **Docs**
+
+[easyshop/docs](https://easy-shop-backend-mocha.vercel.app/docs)
 
 ### Deploy in vercel
 
@@ -51,7 +29,6 @@ _https://easy-shop-backend-mocha.vercel.app_
 ### problems && setup guided backend
 
 - initial setup
-
   - app.enable("trust proxy"); // for vercel https enable
   - modngoDBconnection(); // not middleware only function call
   - app.use(cors(corseSEtup)); // cors setup
