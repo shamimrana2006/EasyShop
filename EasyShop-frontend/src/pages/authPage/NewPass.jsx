@@ -11,6 +11,7 @@ import Loading from "../../Layout/Loading";
 import { resetPassSave, resetstate, userFetch } from "../../features/UserSlice";
 import { toast } from "react-toastify";
 
+
 const NewPass = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -46,6 +47,7 @@ const NewPass = () => {
     const Confirmpassword = data?.repassword;
 
     const result = dispatch(resetPassSave({ password, Confirmpassword })).unwrap();
+   
 
     toast.promise(result, {
       pending: "password changing...",

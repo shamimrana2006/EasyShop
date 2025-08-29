@@ -377,6 +377,7 @@ const token_checkFor_resetPass = async (req, res) => {
       { $set: { password: HashPassword } },
       { new: true }
     );
+     const emailconfirmation = await SendMail(req?.user?.email, "changed password", `hei username: ${req?.user?.UserName} your password was changed recently and you can checked it `);
 
     success_res(res, {
       status_code: 201,
