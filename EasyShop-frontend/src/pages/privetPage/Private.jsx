@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useLocation, useNavigate } from "react-router";
-import Loading from "../../Layout/Loading";
+import Loading from "../../components/Loading";
 import { useEffect, useState } from "react";
 import { userDAtaProfile, userFetch } from "../../features/UserSlice";
 import { FaMoon, FaSun } from "react-icons/fa";
@@ -19,22 +19,18 @@ const PrivetRout = ({ children }) => {
 
   useEffect(() => {
     console.log(" ami hitted");
-    
+
     dispatch(userDAtaProfile());
   }, [dispatch]);
-
 
   if (user?.loading) {
     return <Loading />;
   }
- 
 
   return (
     <>
       {children}
-      <div className="w-full transition-all duration-1000 h-screen flex justify-center items-center">
-        
-      </div>
+      <div className="w-full transition-all duration-1000 h-screen flex justify-center items-center"></div>
     </>
   );
 };

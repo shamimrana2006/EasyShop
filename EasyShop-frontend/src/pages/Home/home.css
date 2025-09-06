@@ -1,0 +1,8 @@
+.bg-banner{
+    background: url("../../../public/image_361.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    overflow: hidden;
+    border-radius: 20px;
+}

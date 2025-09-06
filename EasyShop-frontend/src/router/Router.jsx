@@ -1,8 +1,8 @@
-import { Route, Routes, useLocation } from "react-router";
+import { Outlet, Route, Routes, useLocation } from "react-router";
 import Auth from "../Layout/AuthLayout";
 import Login from "../pages/authPage/Login";
 import Profile from "../pages/IsLoginPages/User/Profile";
-import User from "../Layout/UserLayout";
+import UserLayout from "../Layout/UserLayout";
 import Layout from "../Layout/Layout";
 import Register from "../pages/authPage/Register";
 import NotFound from "../pages/NotFound";
@@ -16,6 +16,7 @@ import ForgotPasswordOTP from "../pages/authPage/ForgotPasswordOTP";
 import NewPass from "../pages/authPage/NewPass";
 import PersionalInfo from "../pages/IsLoginPages/User/PersionalInfo";
 import ActivationOTP from "../pages/authPage/ActivationOTP";
+import Homepage from "../pages/Home/Homepage";
 
 const Router_Custom = () => {
   const location = useLocation();
@@ -24,8 +25,13 @@ const Router_Custom = () => {
       <AnimatePresence mode="wait">
         <PageTransitionFade key={location.pathname}>
           <Routes location={location}>
+            {/* main layout */}
             <Route path="/" element={<Layout />}>
-              <Route path="user" element={<User />}>
+              <Route path="/" element={<Homepage />}>
+                <Route index element="this is home page element"></Route>
+              </Route>
+              <Route path="user" element={<UserLayout />}>
+                <Route index element="user"></Route>
                 <Route
                   path="profile"
                   element={
@@ -35,12 +41,14 @@ const Router_Custom = () => {
                   }>
                   <Route index element={<Profile />}></Route>
                   <Route path="active_with_otp" element={<ActivationOTP />}></Route>
-                  <Route path="persionalInfo" element={<PersionalInfo/>}></Route>
+                  <Route path="persionalInfo" element={<PersionalInfo />}></Route>
                   <Route path="security" element="shamim"></Route>
                   <Route path="*" element={<NotFound></NotFound>}></Route>
                 </Route>
               </Route>
             </Route>
+            {/* auth layout */}
+
             <Route path="/auth" element={<Auth />}>
               <Route path="Register" element={<Register />} />
               <Route path="login" element={<Login />} />
@@ -48,6 +56,8 @@ const Router_Custom = () => {
               <Route path="forgot_OTP" element={<ForgotPasswordOTP />} />
               <Route path="resetPass" element={<NewPass />} />
             </Route>
+            {/* private layout */}
+
             <Route
               path="/private"
               element={

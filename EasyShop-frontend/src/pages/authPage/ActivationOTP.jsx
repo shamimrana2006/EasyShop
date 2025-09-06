@@ -7,7 +7,7 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import Loading from "../../Layout/Loading";
+import Loading from "../../components/Loading";
 import { resetOTPTOKenCreate, resetPassOTP, resetstate, userFetch } from "../../features/UserSlice";
 import { toast } from "react-toastify";
 
@@ -33,7 +33,7 @@ const ActivationOTP = () => {
   // }, [user.user]);
 
   const resentOTP = async () => {
-    const result = dispatch(resetPassOTP({ email})).unwrap();
+    const result = dispatch(resetPassOTP({ email })).unwrap();
 
     toast.promise(result, {
       pending: "otp resending...",

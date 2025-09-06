@@ -7,10 +7,9 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import Loading from "../../Layout/Loading";
+import Loading from "../../components/Loading";
 import { resetPassSave, resetstate, userFetch } from "../../features/UserSlice";
 import { toast } from "react-toastify";
-
 
 const NewPass = () => {
   const navigate = useNavigate();
@@ -47,7 +46,6 @@ const NewPass = () => {
     const Confirmpassword = data?.repassword;
 
     const result = dispatch(resetPassSave({ password, Confirmpassword })).unwrap();
-   
 
     toast.promise(result, {
       pending: "password changing...",

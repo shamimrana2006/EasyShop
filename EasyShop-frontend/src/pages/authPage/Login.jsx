@@ -7,7 +7,7 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import Loading from "../../Layout/Loading";
+import Loading from "../../components/Loading";
 import { resetstate, userFetch } from "../../features/UserSlice";
 import { toast } from "react-toastify";
 
@@ -42,7 +42,7 @@ const Login = () => {
         method: "post",
         url: "/join/login",
         payload: { UserName: userName, password: Password },
-      })
+      }),
     ).unwrap();
 
     toast.promise(result, {

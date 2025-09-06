@@ -8,7 +8,7 @@ import { CiCalculator1 } from "react-icons/ci";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { resetstate, userFetch } from "../../features/UserSlice";
-import Loading from "../../Layout/Loading";
+import Loading from "../../components/Loading";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);

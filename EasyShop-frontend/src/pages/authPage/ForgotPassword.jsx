@@ -7,7 +7,7 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import Loading from "../../Layout/Loading";
+import Loading from "../../components/Loading";
 import { resetPassOTP, resetstate, userFetch } from "../../features/UserSlice";
 import { toast } from "react-toastify";
 import { PulseLoader, ScaleLoader } from "react-spinners";

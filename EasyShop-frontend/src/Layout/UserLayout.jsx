@@ -1,11 +1,11 @@
 import { Outlet } from "react-router";
 
-const User = () => {
+const UserLayout = () => {
   return (
-    <div>
+    <div className="container">
       <Outlet />
     </div>
   );
 };
 
-export default User;
+export default UserLayout;

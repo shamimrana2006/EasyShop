@@ -4,7 +4,7 @@ import { CiHeart, CiMenuKebab, CiSettings, CiSun, CiUser } from "react-icons/ci"
 import { FaBackward, FaCalendarMinus, FaFacebook, FaInstagram, FaLinkedin, FaMoon, FaSearch, FaSun, FaTwitter } from "react-icons/fa";
 import { Link, NavLink, useLocation } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import Loading from "../Layout/Loading";
+import Loading from "./Loading";
 import { ThemeToggle, userLogout } from "../features/UserSlice";
 import { Navigate } from "react-router";
 import "./navbar.css";
@@ -86,8 +86,8 @@ const NavBar = () => {
   );
   const ifProfileSoHidden = location.pathname.includes("/user/profile") ? "" : "md:flex";
   return (
-    <div className="sticky navmain top-0 z-50">
-      <div  className="bg-bg text-text border-border">
+    <div className="sticky container navmain top-0 z-50">
+      <div className="bg-bg text-text border-border">
         {/* topbar */}
         <div className={`bg-bg containerr hidden justify-between items-center py-2 ${ifProfileSoHidden} focus:text-ptext `}>
           <div className="socialIcons flex text-gray-500 gap-1">
